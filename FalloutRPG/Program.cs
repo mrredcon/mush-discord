@@ -61,6 +61,7 @@ namespace FalloutRPG
             .AddSingleton<StartupService>()
             .AddSingleton<CharacterService>()
             .AddSingleton<ExperienceService>()
+            .AddSingleton<EncounterService>()
             .AddSingleton<InteractiveService>()
             .AddSingleton<RpgContext>()
             .AddTransient<IRepository<Character>, EfRepository<Character>>()

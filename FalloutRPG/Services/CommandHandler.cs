@@ -1,6 +1,7 @@
 ﻿using Discord.Commands;
 using Discord.WebSocket;
 using FalloutRPG.Constants;
+using FalloutRPG.Util;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace FalloutRPG.Services
         private readonly CommandService _commands;
         private readonly ExperienceService _expService;
         private readonly CharacterService _charService;
+        private readonly EncounterService _encounterService;
         private readonly IServiceProvider _services;
         private readonly IConfiguration _config;
 
@@ -23,6 +25,7 @@ namespace FalloutRPG.Services
             CommandService commands,
             ExperienceService expService,
             CharacterService charService,
+            EncounterService encounterService,
             IServiceProvider services,
             IConfiguration config)
         {
@@ -30,6 +33,7 @@ namespace FalloutRPG.Services
             _commands = commands;
             _expService = expService;
             _charService = charService;
+            _encounterService = encounterService;
             _services = services;
             _config = config;
         }
@@ -47,21 +51,21 @@ namespace FalloutRPG.Services
 
         /// <summary>
         /// Handles incoming commands if it begins with specified prefix.
-        /// If there is no prefix, it will process experience.
+        /// If there is no prefix, it will process experience and encounters.
         /// </summary>
         private async Task HandleCommandAsync(SocketMessage messageParam)
         {
-            SocketCommandContext context = null;
-
             var message = messageParam as SocketUserMessage;
             if (message == null || message.Author.IsBot) return;
 
             int argPos = 0;
+            var context = new SocketCommandContext(_client, message);
 
             if (!(message.HasStringPrefix(_config["prefix"], ref argPos) ||
                 message.HasMentionPrefix(_client.CurrentUser, ref argPos)))
             {
-                await ProcessExperienceAsync(new SocketCommandContext(_client, message));
+                await ProcessExperienceAsync(context);
+                await ProcessEncounterAsync(context);
                 return;
             }
 
@@ -93,6 +97,28 @@ namespace FalloutRPG.Services
                 var level = _expService.CalculateLevelForExperience(character.Experience);
                 await context.Channel.SendMessageAsync(
                     string.Format(Messages.EXP_LEVEL_UP, userInfo.Mention, level));
+            }
+        }
+
+        /// <summary>
+        /// Process encounter if channel is in encounter channel.
+        /// </summary>
+        private async Task ProcessEncounterAsync(SocketCommandContext context)
+        {
+            if (!_encounterService.IsInEncounterEnabledChannel(context.Channel.Id)) return;
+
+            var userInfo = context.User;
+            var character = _charService.GetCharacter(userInfo.Id);
+
+            if (character == null) return;
+
+            if (_encounterService.DoesCharacterGetInEncounter(character))
+            {
+                var encounter = _encounterService.GetRandomEncounter();
+
+                var embed = EmbedTool.BuildBasicEmbed(encounter.Title, encounter.Description);
+
+                await context.Channel.SendMessageAsync(userInfo.Mention, embed: embed);
             }
         }
     }

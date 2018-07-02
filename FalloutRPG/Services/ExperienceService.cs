@@ -123,11 +123,7 @@ namespace FalloutRPG.Services
         /// </summary>
         public bool IsInExperienceEnabledChannel(ulong channelId)
         {
-            foreach (var channel in ExperienceEnabledChannels)
-                if (channelId == channel)
-                    return true;
-
-            return false;
+            return ExperienceEnabledChannels.Contains(channelId);
         }
 
         /// <summary>
