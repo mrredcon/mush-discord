@@ -1,4 +1,6 @@
-﻿using FalloutRPG.Models;
+﻿using Discord;
+using FalloutRPG.Models.Characters;
+using FalloutRPG.Models.Encounters;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,30 +9,31 @@ namespace FalloutRPG.Services
 {
     public class EncounterService
     {
-        private List<Encounter> Encounters;
+        private List<BaseEncounter> Encounters;
         private List<ulong> EncounterEnabledChannels;
 
         public EncounterService()
         {
-            Encounters = new List<Encounter>
+            // TODO: Load from database
+            Encounters = new List<BaseEncounter>
             {
-                new Encounter()
+                new DialogEncounter()
                 {
-                    Title = "Oh shit! An encounter!",
+                    Title = "Dialog Encounter",
                     Description = "You have just gotten into a plain old boring encounter."
                 },
 
 
-                new Encounter()
+                new EnemyEncounter()
                 {
-                    Title = "Fuck sake, here we go!",
+                    Title = "Enemy Encounter",
                     Description = "A motherfucking damn shitty encounter that does fuck all."
                 },
 
 
-                new Encounter()
+                new LootEncounter()
                 {
-                    Title = "Really nigga? Really?",
+                    Title = "Loot Encounter",
                     Description = "Y u gotta do this to me boi?"
                 }
             };
@@ -43,6 +46,7 @@ namespace FalloutRPG.Services
         /// </summary>
         public bool DoesCharacterGetInEncounter(Character character)
         {
+            // TODO: Improve this shit
             var random = new Random();
 
             if (random.Next(100) > 50)
@@ -54,7 +58,7 @@ namespace FalloutRPG.Services
         /// <summary>
         /// Checks if Channel ID is an Encounter Enabled Channel.
         /// </summary>
-        public bool IsInEncounterEnabledChannel(ulong channelId)
+        public bool IsEncounterEnabledChannel(ulong channelId)
         {
             return EncounterEnabledChannels.Contains(channelId);
         }
@@ -76,11 +80,54 @@ namespace FalloutRPG.Services
         /// Choose a random encounter type then a random
         /// encounter of that type.
         /// </summary>
-        public Encounter GetRandomEncounter()
+        public BaseEncounter GetRandomEncounter()
         {
             var random = new Random();
 
             return Encounters[random.Next(Encounters.Count)];
         }
+
+        public Embed ProcessEncounter(Character character, BaseEncounter baseEncounter)
+        {
+            if (baseEncounter is LootEncounter lootEncounter)
+                return ProcessLootEncounter(character, lootEncounter);
+
+            if (baseEncounter is DialogEncounter dialogEncounter)
+                return ProcessDialogEncounter(character, dialogEncounter);
+
+            if (baseEncounter is EnemyEncounter enemyEncounter)
+                return ProcessEnemyEncounter(character, enemyEncounter);
+
+            return null; 
+        }
+
+        private Embed ProcessLootEncounter(Character character, LootEncounter encounter)
+        {
+            // Callback: Pick lock
+            // Callback: Force lock (Risk breaking pick)
+
+            return null;
+        }
+
+        private Embed ProcessDialogEncounter(Character character, DialogEncounter encounter)
+        {
+            // Callbacks: Dialog Options 1, 2, 3, 4
+
+            return null;
+        }
+
+        private Embed ProcessEnemyEncounter(Character character, EnemyEncounter encounter)
+        {
+            // Callback: Fight
+            // Callback: Run
+            // Callback: Talk way out of it
+            // Callback: Bribe
+
+            return null;
+        }
+
+        // I think ProcessedEncounter Model
+        // BaseEncounter Encounter {get;set;}
+        // List<Func<T, T>> Callbacks;
     }
 }

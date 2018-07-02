@@ -1,4 +1,4 @@
-﻿using FalloutRPG.Models;
+﻿using FalloutRPG.Models.Characters;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -121,7 +121,7 @@ namespace FalloutRPG.Services
         /// Checks if the input Channel ID is an experience
         /// enabled channel.
         /// </summary>
-        public bool IsInExperienceEnabledChannel(ulong channelId)
+        public bool IsExperienceEnabledChannel(ulong channelId)
         {
             return ExperienceEnabledChannels.Contains(channelId);
         }

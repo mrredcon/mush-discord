@@ -1,4 +1,4 @@
-﻿using FalloutRPG.Models;
+﻿using FalloutRPG.Models.Characters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;

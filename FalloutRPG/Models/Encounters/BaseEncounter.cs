@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FalloutRPG.Models
+namespace FalloutRPG.Models.Encounters
 {
-    public class Encounter
+    public abstract class BaseEncounter : BaseModel
     {
         public string Title { get; set; }
         public string Description { get; set; }

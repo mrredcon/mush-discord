@@ -1,6 +1,10 @@
-﻿using Discord.Commands;
+﻿using Discord;
+using Discord.Addons.Interactive;
+using Discord.Commands;
 using Discord.WebSocket;
+using FalloutRPG.Callbacks;
 using FalloutRPG.Constants;
+using FalloutRPG.Models.Characters;
 using FalloutRPG.Util;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -17,6 +21,7 @@ namespace FalloutRPG.Services
         private readonly ExperienceService _expService;
         private readonly CharacterService _charService;
         private readonly EncounterService _encounterService;
+        private readonly InteractiveService _interactiveService;
         private readonly IServiceProvider _services;
         private readonly IConfiguration _config;
 
@@ -26,6 +31,7 @@ namespace FalloutRPG.Services
             ExperienceService expService,
             CharacterService charService,
             EncounterService encounterService,
+            InteractiveService interactiveService,
             IServiceProvider services,
             IConfiguration config)
         {
@@ -34,6 +40,7 @@ namespace FalloutRPG.Services
             _expService = expService;
             _charService = charService;
             _encounterService = encounterService;
+            _interactiveService = interactiveService;
             _services = services;
             _config = config;
         }
@@ -64,8 +71,13 @@ namespace FalloutRPG.Services
             if (!(message.HasStringPrefix(_config["prefix"], ref argPos) ||
                 message.HasMentionPrefix(_client.CurrentUser, ref argPos)))
             {
-                await ProcessExperienceAsync(context);
-                await ProcessEncounterAsync(context);
+                var userInfo = context.User;
+                var character = _charService.GetCharacter(userInfo.Id);
+
+                if (character == null) return;
+
+                await ProcessExperienceAsync(context, userInfo, character);
+                await ProcessEncounterAsync(context, userInfo, character);
                 return;
             }
 
@@ -81,14 +93,13 @@ namespace FalloutRPG.Services
         /// Processes experience to give if channel is an experience
         /// enabled channel.
         /// </summary>
-        private async Task ProcessExperienceAsync(SocketCommandContext context)
+        private async Task ProcessExperienceAsync(
+            SocketCommandContext context,
+            SocketUser userInfo,
+            Character character)
         {
-            if (!_expService.IsInExperienceEnabledChannel(context.Channel.Id)) return;
-
-            var userInfo = context.User;
-            var character = _charService.GetCharacter(userInfo.Id);
-
-            if (character == null) return;
+            if (!_expService.IsExperienceEnabledChannel(context.Channel.Id))
+                return;
 
             var expToGive = _expService.GetRandomExperience();
 
@@ -103,22 +114,32 @@ namespace FalloutRPG.Services
         /// <summary>
         /// Process encounter if channel is in encounter channel.
         /// </summary>
-        private async Task ProcessEncounterAsync(SocketCommandContext context)
+        private async Task ProcessEncounterAsync(
+            SocketCommandContext context,
+            SocketUser userInfo,
+            Character character)
         {
-            if (!_encounterService.IsInEncounterEnabledChannel(context.Channel.Id)) return;
-
-            var userInfo = context.User;
-            var character = _charService.GetCharacter(userInfo.Id);
-
-            if (character == null) return;
+            if (!_encounterService.IsEncounterEnabledChannel(context.Channel.Id))
+                return;
 
             if (_encounterService.DoesCharacterGetInEncounter(character))
             {
+                var one = new Emoji("1⃣");
+                var two = new Emoji("2⃣");
+
                 var encounter = _encounterService.GetRandomEncounter();
 
                 var embed = EmbedTool.BuildBasicEmbed(encounter.Title, encounter.Description);
 
-                await context.Channel.SendMessageAsync(userInfo.Mention, embed: embed);
+                var message = await _interactiveService.SendMessageWithReactionCallbacksAsync(
+                    context,
+                    new ReactionCallbackData(userInfo.Mention, embed, false, true)
+                        // Loop through encounter callbacks and add them
+                        .WithCallback(one, (c, r)
+                            => callback1())
+                        .WithCallback(two, (c, r) 
+                            => c.Channel.SendMessageAsync($"{r.User.Value.Mention} Here you go :tropical_drink:")),
+                    true);
             }
         }
     }

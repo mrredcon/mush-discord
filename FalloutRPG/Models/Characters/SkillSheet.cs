@@ -1,4 +1,4 @@
-﻿namespace FalloutRPG.Models
+﻿namespace FalloutRPG.Models.Characters
 {
     public class SkillSheet : BaseModel
     {

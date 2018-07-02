@@ -1,7 +1,7 @@
 ﻿using FalloutRPG.Constants;
 using FalloutRPG.Data.Repositories;
 using FalloutRPG.Exceptions;
-using FalloutRPG.Models;
+using FalloutRPG.Models.Characters;
 using FalloutRPG.Util;
 using System.Collections.Generic;
 using System.Linq;
