@@ -1,9 +1,13 @@
 ﻿using Discord;
+using Discord.Commands;
+using Discord.WebSocket;
+using FalloutRPG.Callbacks;
 using FalloutRPG.Models.Characters;
 using FalloutRPG.Models.Encounters;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FalloutRPG.Services
 {
@@ -87,7 +91,7 @@ namespace FalloutRPG.Services
             return Encounters[random.Next(Encounters.Count)];
         }
 
-        public Embed ProcessEncounter(Character character, BaseEncounter baseEncounter)
+        public ProcessedEncounter ProcessEncounter(Character character, BaseEncounter baseEncounter)
         {
             if (baseEncounter is LootEncounter lootEncounter)
                 return ProcessLootEncounter(character, lootEncounter);
@@ -101,22 +105,29 @@ namespace FalloutRPG.Services
             return null; 
         }
 
-        private Embed ProcessLootEncounter(Character character, LootEncounter encounter)
+        private ProcessedEncounter ProcessLootEncounter(Character character, LootEncounter encounter)
         {
             // Callback: Pick lock
             // Callback: Force lock (Risk breaking pick)
+            var callbacks = LootEncounterCallbacks.CreateCallbacks(character, encounter);
 
-            return null;
+            var processed = new ProcessedEncounter()
+            {
+                Encounter = encounter,
+                Callbacks = callbacks
+            };
+
+            return processed;
         }
 
-        private Embed ProcessDialogEncounter(Character character, DialogEncounter encounter)
+        private ProcessedEncounter ProcessDialogEncounter(Character character, DialogEncounter encounter)
         {
             // Callbacks: Dialog Options 1, 2, 3, 4
 
             return null;
         }
 
-        private Embed ProcessEnemyEncounter(Character character, EnemyEncounter encounter)
+        private ProcessedEncounter ProcessEnemyEncounter(Character character, EnemyEncounter encounter)
         {
             // Callback: Fight
             // Callback: Run

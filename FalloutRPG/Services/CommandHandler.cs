@@ -124,22 +124,27 @@ namespace FalloutRPG.Services
 
             if (_encounterService.DoesCharacterGetInEncounter(character))
             {
-                var one = new Emoji("1⃣");
-                var two = new Emoji("2⃣");
+                var emojis = new Emoji[]
+                {
+                    new Emoji("1⃣"),
+                    new Emoji("2⃣")
+                };
 
                 var encounter = _encounterService.GetRandomEncounter();
 
                 var embed = EmbedTool.BuildBasicEmbed(encounter.Title, encounter.Description);
 
+                var processed = _encounterService.ProcessEncounter(character, encounter);
+
+                var reactioncallbackdata = new ReactionCallbackData(userInfo.Mention, embed, false, true);
+                
+                for (var i = 0; i < processed.Callbacks.Count; i++)
+                {
+                    reactioncallbackdata.WithCallback(emojis[i], processed.Callbacks.ElementAt(i).Value);
+                }
+
                 var message = await _interactiveService.SendMessageWithReactionCallbacksAsync(
-                    context,
-                    new ReactionCallbackData(userInfo.Mention, embed, false, true)
-                        // Loop through encounter callbacks and add them
-                        .WithCallback(one, (c, r)
-                            => callback1())
-                        .WithCallback(two, (c, r) 
-                            => c.Channel.SendMessageAsync($"{r.User.Value.Mention} Here you go :tropical_drink:")),
-                    true);
+                    context, reactioncallbackdata, true);
             }
         }
     }
