@@ -4,6 +4,7 @@
     "discord": "NDU3MTk3NTgxMDE0MTM4ODgw.Dhv-dg.O6KtKwMJLnZhApxuDkdN_wLmKVE"
   },
   "roleplay": {
-    "exp-channels": [ "462324889584664596", "462324906710007810" ]
+    "exp-channels": [ "462324889584664596", "462324906710007810" ],
+    "encounter-channels": [ "462324906710007810" ]
   }
 }

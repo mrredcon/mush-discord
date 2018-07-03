@@ -6,6 +6,7 @@ using FalloutRPG.Callbacks;
 using FalloutRPG.Constants;
 using FalloutRPG.Models.Characters;
 using FalloutRPG.Models.Encounters;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,17 +20,30 @@ namespace FalloutRPG.Services
         private List<BaseEncounter> Encounters;
         private List<ulong> EncounterEnabledChannels;
 
-        public EncounterService()
+        private readonly IConfiguration _config;
+
+        public EncounterService(IConfiguration config)
         {
+            _config = config;
+
             // TODO: Load from database
             Encounters = new List<BaseEncounter>
             {
                 new DialogEncounter()
                 {
                     Title = "Dialog Encounter",
-                    Description = "You have just gotten into a plain old boring encounter."
+                    Description = "While travelling the wastes, you see an ominous dark cave. " +
+                                  "There are several dead animals surrounding the outside. " +
+                                  "A man then comes running out, pleading you to help him with " +
+                                  "\"something inside.\"",
+                    Choices = new List<string>()
+                    {
+                        "I'll help you.",
+                        "There better be caps in this discussion. [Charisma/Barter]",
+                        "Stay away! You probably did all this! [Attack]",
+                        "[Run Away]"
+                    }
                 },
-
 
                 new EnemyEncounter()
                 {
@@ -63,10 +77,7 @@ namespace FalloutRPG.Services
             // TODO: Improve this shit
             var random = new Random();
 
-            if (random.Next(100) > 50)
-                return false;
-
-            return true;
+            return (random.Next(100) > 50);
         }
 
         /// <summary>
@@ -75,30 +86,6 @@ namespace FalloutRPG.Services
         public bool IsEncounterEnabledChannel(ulong channelId)
         {
             return EncounterEnabledChannels.Contains(channelId);
-        }
-
-        /// <summary>
-        /// Loads the encounter enabled channels from
-        /// the configuration file.
-        /// </summary>
-        private void LoadEncounterEnabledChannels()
-        {
-            // TODO: Load from config file
-            EncounterEnabledChannels = new List<ulong>
-            {
-                462324906710007810
-            };
-        }
-
-        /// <summary>
-        /// Choose a random encounter type then a random
-        /// encounter of that type.
-        /// </summary>
-        private BaseEncounter GetRandomEncounter()
-        {
-            var random = new Random();
-
-            return Encounters[random.Next(Encounters.Count)];
         }
 
         public ReactionCallbackData BuildReactionCallbackData(
@@ -134,6 +121,37 @@ namespace FalloutRPG.Services
             return null; 
         }
 
+        /// <summary>
+        /// Loads the encounter enabled channels from
+        /// the configuration file.
+        /// </summary>
+        private void LoadEncounterEnabledChannels()
+        {
+            try
+            {
+                EncounterEnabledChannels = _config
+                    .GetSection("roleplay:encounter-channels")
+                    .GetChildren()
+                    .Select(x => UInt64.Parse(x.Value))
+                    .ToList();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("You have not specified any encounter enabled channels in Config.json");
+            }
+        }
+
+        /// <summary>
+        /// Choose a random encounter type then a random
+        /// encounter of that type.
+        /// </summary>
+        private BaseEncounter GetRandomEncounter()
+        {
+            var random = new Random();
+
+            return Encounters[random.Next(Encounters.Count)];
+        }
+
         private ProcessedEncounter ProcessLootEncounter(
             Character character,
             LootEncounter encounter,
@@ -152,6 +170,7 @@ namespace FalloutRPG.Services
             string content)
         {
             // Callbacks: Dialog Options 1, 2, 3, 4
+            var callbacks = DialogEncounterCallbacks.CreateCallbacks(character, encounter);
 
             return null;
         }
