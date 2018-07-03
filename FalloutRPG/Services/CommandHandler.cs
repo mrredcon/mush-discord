@@ -2,14 +2,15 @@
 using Discord.Addons.Interactive;
 using Discord.Commands;
 using Discord.WebSocket;
-using FalloutRPG.Callbacks;
 using FalloutRPG.Constants;
 using FalloutRPG.Models.Characters;
+using FalloutRPG.Models.Encounters;
 using FalloutRPG.Util;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace FalloutRPG.Services
@@ -124,27 +125,16 @@ namespace FalloutRPG.Services
 
             if (_encounterService.DoesCharacterGetInEncounter(character))
             {
-                var emojis = new Emoji[]
-                {
-                    new Emoji("1⃣"),
-                    new Emoji("2⃣")
-                };
-
-                var encounter = _encounterService.GetRandomEncounter();
-
-                var embed = EmbedTool.BuildBasicEmbed(encounter.Title, encounter.Description);
-
-                var processed = _encounterService.ProcessEncounter(character, encounter);
-
-                var reactioncallbackdata = new ReactionCallbackData(userInfo.Mention, embed, false, true);
+                var encounter = _encounterService.ProcessEncounter(character);
                 
-                for (var i = 0; i < processed.Callbacks.Count; i++)
-                {
-                    reactioncallbackdata.WithCallback(emojis[i], processed.Callbacks.ElementAt(i).Value);
-                }
+                var embed = EmbedTool.BuildBasicEmbed(
+                    encounter.Encounter.Title,
+                    encounter.Content);
+
+                var callbackData = _encounterService.BuildReactionCallbackData(userInfo, embed, encounter);
 
                 var message = await _interactiveService.SendMessageWithReactionCallbacksAsync(
-                    context, reactioncallbackdata, true);
+                    context, callbackData, true);
             }
         }
     }

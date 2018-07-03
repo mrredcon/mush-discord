@@ -12,5 +12,7 @@ namespace FalloutRPG.Models.Encounters
         public BaseEncounter Encounter { get; set; }
 
         public Dictionary<string, Func<SocketCommandContext, SocketReaction, Task>> Callbacks { get; set; }
+
+        public string Content { get; set; }
     }
 }

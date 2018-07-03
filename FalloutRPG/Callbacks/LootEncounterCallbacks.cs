@@ -4,7 +4,6 @@ using FalloutRPG.Models.Characters;
 using FalloutRPG.Models.Encounters;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FalloutRPG.Callbacks
@@ -18,13 +17,21 @@ namespace FalloutRPG.Callbacks
 
             Task PickLock(SocketCommandContext c, SocketReaction r)
             {
-                c.Channel.SendMessageAsync($"{c.User.Mention}: You pick the lock. {character.FirstName}");
+                if (character.Skills.Lockpick >= encounter.LockpickRequired)
+                {
+                    c.Channel.SendMessageAsync($"You manage to pick the lock and get what's inside! ({c.User.Mention})");
+                }
+                else
+                {
+                    c.Channel.SendMessageAsync($"You don't have the required skills to pick this lock. ({c.User.Mention})");
+                }
+
                 return Task.CompletedTask;
             }
 
             Task ForceLock(SocketCommandContext c, SocketReaction r)
             {
-                c.Channel.SendMessageAsync($"{c.User.Mention}: You try to force the lock.");
+                c.Channel.SendMessageAsync($"{c.User.Mention}: You try and fail to force the lock.");
                 return Task.CompletedTask;
             }
 
