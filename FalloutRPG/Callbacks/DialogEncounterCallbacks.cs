@@ -20,7 +20,7 @@ namespace FalloutRPG.Callbacks
                 case Encounters.DIALOG_MAN_NEEDS_HELP:
                     Task Help(SocketCommandContext c, SocketReaction r)
                     {
-
+                        
 
                         return Task.CompletedTask;
                     }

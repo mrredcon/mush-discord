@@ -1,4 +1,5 @@
-﻿using Discord.Commands;
+﻿using Discord.Addons.Interactive;
+using Discord.Commands;
 using Discord.WebSocket;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ namespace FalloutRPG.Models.Encounters
         public BaseEncounter Encounter { get; set; }
 
         public Dictionary<string, Func<SocketCommandContext, SocketReaction, Task>> Callbacks { get; set; }
+
+        public ReactionCallbackData CallbackData { get; set; }
 
         public string Content { get; set; }
     }

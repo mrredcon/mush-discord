@@ -103,7 +103,7 @@ namespace FalloutRPG.Services
                 return;
 
             var expToGive = _expService.GetRandomExperience();
-
+            
             if (await _expService.GiveExperienceAsync(character, expToGive))
             {
                 var level = _expService.CalculateLevelForExperience(character.Experience);

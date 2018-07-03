@@ -48,7 +48,18 @@ namespace FalloutRPG.Services
                 new EnemyEncounter()
                 {
                     Title = "Enemy Encounter",
-                    Description = "A motherfucking damn shitty encounter that does fuck all."
+                    Description = "A tough looking raider jumps out of nowhere and aims their pipe pistol at you.",
+                    Choices = new List<string>()
+                    {
+                        "Fight the enemy.",
+                        "Run for your life.",
+                        "Talk your way out of it.",
+                        "Bribe your way out of it."
+                    },
+                    EnemyName = "Raider",
+                    Level = 3,
+                    Charisma = 4,
+                    Barter = 25
                 },
 
 
@@ -180,12 +191,9 @@ namespace FalloutRPG.Services
             EnemyEncounter encounter,
             string content)
         {
-            // Callback: Fight
-            // Callback: Run
-            // Callback: Talk way out of it
-            // Callback: Bribe
+            var callbacks = EnemyEncounterCallbacks.CreateCallbacks(character, encounter);
 
-            return null;
+            return BuildProcessedEncounter(encounter, callbacks, content);
         }
 
         private string BuildContentString(BaseEncounter encounter)

@@ -16,6 +16,8 @@
     <Compile Include="Migrations\20180702180057_CharIdForeignKeyMigration.Designer.cs" />
     <Compile Include="Migrations\20180702180612_TestMigration.cs" />
     <Compile Include="Migrations\20180702180612_TestMigration.Designer.cs" />
+    <Compile Include="Migrations\20180703182733_Level.cs" />
+    <Compile Include="Migrations\20180703182733_Level.Designer.cs" />
     <Compile Include="Migrations\RpgContextModelSnapshot.cs" />
   </ItemGroup>
 

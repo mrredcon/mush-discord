@@ -91,7 +91,7 @@ namespace FalloutRPG.Services
             };
 
             await _charRepository.AddAsync(character);
-
+            
             return character;
         }
 
