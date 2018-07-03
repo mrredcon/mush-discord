@@ -56,10 +56,20 @@ namespace FalloutRPG.Services
                         "Talk your way out of it.",
                         "Bribe your way out of it."
                     },
-                    EnemyName = "Raider",
+                    Name = "Raider",
                     Level = 3,
-                    Charisma = 4,
-                    Barter = 25
+
+                    Strength = 4,
+                    Perception = 3,
+                    Endurance = 5,
+                    Charisma = 2,
+                    Intelligence = 3,
+                    Agility = 6,
+                    Luck = 2,
+
+                    CombatSkill = 35,
+                    Barter = 25,
+                    Speech = 20
                 },
 
 

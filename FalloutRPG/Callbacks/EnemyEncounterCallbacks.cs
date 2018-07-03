@@ -64,7 +64,6 @@ namespace FalloutRPG.Callbacks
                 return Task.CompletedTask;
             }
 
-
             callbacks.Add("Attack", Attack);
             callbacks.Add("Run", Run);
             callbacks.Add("Charisma", Charisma);
