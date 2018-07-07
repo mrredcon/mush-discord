@@ -4,7 +4,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using FalloutRPG.Data;
 using FalloutRPG.Data.Repositories;
-using FalloutRPG.Models.Characters;
+using FalloutRPG.Models;
 using FalloutRPG.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -59,9 +59,14 @@ namespace FalloutRPG
             .AddSingleton<CommandHandler>()
             .AddSingleton<LogService>()
             .AddSingleton<StartupService>()
+            .AddSingleton<RollService>()
+            .AddSingleton<SkillsService>()
+            .AddSingleton<SpecialService>()
+            .AddSingleton<StartupService>()
             .AddSingleton<CharacterService>()
             .AddSingleton<ExperienceService>()
-            .AddSingleton<EncounterService>()
+            .AddSingleton<GamblingService>()
+            .AddSingleton<CrapsService>()
             .AddSingleton<InteractiveService>()
             .AddSingleton<RpgContext>()
             .AddTransient<IRepository<Character>, EfRepository<Character>>()

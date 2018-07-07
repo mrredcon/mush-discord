@@ -1,5 +1,6 @@
 ﻿using Discord.Commands;
 using FalloutRPG.Addons;
+using FalloutRPG.Constants;
 using System;
 using System.Threading.Tasks;
 
@@ -7,15 +8,15 @@ namespace FalloutRPG.Modules
 {
     public class FalloutModule : ModuleBase<SocketCommandContext>
     {
-        [Command("daysleft"), Ratelimit(1, 0.1, Measure.Minutes)]
+        [Command("daysleft"), Ratelimit(1, Globals.RATELIMIT_SECONDS, Measure.Seconds)]
         [Alias("countdown", "days")]
         public async Task DaysLeftAsync()
         {
-            DateTime today = DateTime.Now;
-            DateTime release = new DateTime(2018, 11, 14);
-            TimeSpan span = (release - today);
+            var today = DateTime.Now;
+            var release = new DateTime(2018, 11, 14);
+            var span = (release - today);
 
-            await Context.Channel.SendMessageAsync(
+            await ReplyAsync(
                 $"There are {span.Days} days," +
                 $" {span.Hours} hours," +
                 $" {span.Minutes} minutes," +
@@ -27,7 +28,7 @@ namespace FalloutRPG.Modules
         [Command("echo")]
         public async Task EchoAsync(string input)
         {
-            await Context.Channel.SendMessageAsync(input);
+            await ReplyAsync(input);
         }
     }
 }

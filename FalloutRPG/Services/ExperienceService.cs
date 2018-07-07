@@ -1,4 +1,7 @@
-﻿using FalloutRPG.Models.Characters;
+﻿using Discord;
+using Discord.WebSocket;
+using FalloutRPG.Constants;
+using FalloutRPG.Models;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -19,11 +22,15 @@ namespace FalloutRPG.Services
         private const int COOLDOWN_INTERVAL = 30000;
 
         private readonly CharacterService _charService;
+        private readonly SkillsService _skillsService;
+        private readonly DiscordSocketClient _client;
         private readonly IConfiguration _config;
 
-        public ExperienceService(CharacterService charService, IConfiguration config)
+        public ExperienceService(CharacterService charService, SkillsService skillsService, DiscordSocketClient client, IConfiguration config)
         {
             _charService = charService;
+            _skillsService = skillsService;
+            _client = client;
             _config = config;
 
             CooldownTimers = new Dictionary<ulong, Timer>();
@@ -121,9 +128,13 @@ namespace FalloutRPG.Services
         /// Checks if the input Channel ID is an experience
         /// enabled channel.
         /// </summary>
-        public bool IsExperienceEnabledChannel(ulong channelId)
+        public bool IsInExperienceEnabledChannel(ulong channelId)
         {
-            return ExperienceEnabledChannels.Contains(channelId);
+            foreach (var channel in ExperienceEnabledChannels)
+                if (channelId == channel)
+                    return true;
+
+            return false;
         }
 
         /// <summary>
@@ -161,9 +172,11 @@ namespace FalloutRPG.Services
         /// </summary>
         private async Task OnLevelUpAsync(Character character)
         {
-            // Give points to spend
+            var user = _client.GetUser(character.DiscordId);
 
-            await _charService.SaveCharacterAsync(character);
+            _skillsService.GiveSkillPoints(character);
+
+            await user.SendMessageAsync(string.Format(Messages.SKILLS_LEVEL_UP, user.Mention, character.SkillPoints));
         }
 
         /// <summary>

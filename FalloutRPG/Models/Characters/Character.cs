@@ -21,7 +21,11 @@ namespace FalloutRPG.Models.Characters
             private set { }
         }
 
+        public float SkillPoints { get; set; }
+
         public Special Special { get; set; }
         public SkillSheet Skills { get; set; }
+
+        public long Money { get; set; }
     }
 }
