@@ -91,7 +91,7 @@ namespace FalloutRPG
             .AddEntityFrameworkSqlite()
                 .AddDbContext<RpgContext>(optionsAction: options => options
                 .UseLazyLoadingProxies()
-                .UseSqlite("Filename=CharacterDB.db"))
+                .UseSqlite("Filename=MUSHDB.db"))
             .AddTransient<IRepository<Player>, EfRepository<Player>>()
             .AddTransient<IRepository<Character>, EfRepository<Character>>()
             .AddTransient<IRepository<SkillSheet>, EfRepository<SkillSheet>>()
