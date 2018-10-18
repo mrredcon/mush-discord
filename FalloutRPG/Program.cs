@@ -100,6 +100,7 @@ namespace FalloutRPG
             .AddTransient<IRepository<Campaign>, EfRepository<Campaign>>()
             .AddTransient<IRepository<Effect>, EfRepository<Effect>>()
             .AddTransient<IRepository<Item>, EfRepository<Item>>()
+            .AddTransient<IRepository<Scene>, EfRepository<Scene>>()
             .BuildServiceProvider();
 
         /// <summary>

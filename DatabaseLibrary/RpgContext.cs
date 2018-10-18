@@ -1,9 +1,5 @@
 ﻿using FalloutRPG.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.IO;
 
 namespace FalloutRPG.Data
 {
@@ -15,6 +11,7 @@ namespace FalloutRPG.Data
         public DbSet<Effect> Effects { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<NpcPreset> NpcPresets { get; set; }
+        public DbSet<Scene> Scenes { get; set; }
 
         public RpgContext(DbContextOptions<RpgContext> options) : base(options)
         {

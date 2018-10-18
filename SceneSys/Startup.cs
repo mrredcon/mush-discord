@@ -2,11 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FalloutRPG.Data;
+using FalloutRPG.Data.Repositories;
+using FalloutRPG.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -31,6 +35,13 @@ namespace SceneSys
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            // Database
+            services.AddEntityFrameworkSqlite()
+                .AddDbContext<RpgContext>(optionsAction: options => options
+                .UseLazyLoadingProxies()
+                .UseSqlite("Filename=MUSHDB.db"))
+
+                .AddTransient<IRepository<Scene>, EfRepository<Scene>>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

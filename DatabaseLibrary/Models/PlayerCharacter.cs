@@ -6,7 +6,7 @@ namespace FalloutRPG.Models
 {
     public class PlayerCharacter : Character
     {
-        private PlayerCharacter() { }
+        protected PlayerCharacter() { }
 
         public PlayerCharacter(Player player)
         {

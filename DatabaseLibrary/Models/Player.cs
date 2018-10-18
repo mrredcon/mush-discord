@@ -7,7 +7,7 @@ namespace FalloutRPG.Models
 {
     public class Player : BaseModel
     {
-        private Player() { }
+        protected Player() { }
 
         public Player(ulong discordId)
         {

@@ -1,6 +1,8 @@
 ﻿using Discord.Commands;
 using FalloutRPG.Addons;
 using FalloutRPG.Constants;
+using FalloutRPG.Data.Repositories;
+using FalloutRPG.Models;
 using FalloutRPG.Services.Roleplay;
 using System;
 using System.Threading.Tasks;
@@ -9,13 +11,11 @@ namespace FalloutRPG.Modules
 {
     public class FalloutModule : ModuleBase<SocketCommandContext>
     {
-        private readonly CharacterService _charService;
-        private readonly ExperienceService _expService;
+        private readonly IRepository<Scene> _sceneRepository;
 
-        public FalloutModule(CharacterService charService, ExperienceService expService)
+        public FalloutModule(IRepository<Scene> sceneRepository)
         {
-            _charService = charService;
-            _expService = expService;
+            _sceneRepository = sceneRepository;
         }
 
         [Command("daysleft")]
@@ -37,9 +37,9 @@ namespace FalloutRPG.Modules
 
         [RequireOwner]
         [Command("echo")]
-        public async Task EchoAsync(string input)
+        public async Task EchoAsync(string input, string desc)
         {
-            await ReplyAsync(input);
+            await _sceneRepository.AddAsync(new Scene() { Title = input, Description = desc });
         }
     }
 }

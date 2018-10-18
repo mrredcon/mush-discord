@@ -15,7 +15,7 @@ namespace FalloutRPG.Data
             var builder = new DbContextOptionsBuilder<RpgContext>();
 
             builder.UseLazyLoadingProxies();
-            builder.UseSqlite("Filename=CharacterDB.db");
+            builder.UseSqlite("Filename=MUSHDB.db", b => b.MigrationsAssembly("FalloutRPG.Data"));
 
             return new RpgContext(builder.Options);
         }

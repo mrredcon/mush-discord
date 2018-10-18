@@ -4,8 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FalloutRPG", "FalloutRPG\FalloutRPG.csproj", "{13D95797-3727-43FA-B45C-25F3F3582A44}"
+	ProjectSection(ProjectDependencies) = postProject
+		{38A1AD96-7077-48A7-8129-19E15B8D2B27} = {38A1AD96-7077-48A7-8129-19E15B8D2B27}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SceneSys", "SceneSys\SceneSys.csproj", "{DA86B494-9D06-4E47-BCC7-B5F735373E49}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FalloutRPG.SceneSys", "SceneSys\FalloutRPG.SceneSys.csproj", "{DA86B494-9D06-4E47-BCC7-B5F735373E49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FalloutRPG.Data", "DatabaseLibrary\FalloutRPG.Data.csproj", "{38A1AD96-7077-48A7-8129-19E15B8D2B27}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +26,10 @@ Global
 		{DA86B494-9D06-4E47-BCC7-B5F735373E49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA86B494-9D06-4E47-BCC7-B5F735373E49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA86B494-9D06-4E47-BCC7-B5F735373E49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38A1AD96-7077-48A7-8129-19E15B8D2B27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38A1AD96-7077-48A7-8129-19E15B8D2B27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38A1AD96-7077-48A7-8129-19E15B8D2B27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38A1AD96-7077-48A7-8129-19E15B8D2B27}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

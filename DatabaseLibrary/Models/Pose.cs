@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FalloutRPG.Models
 {
-    public class Pose
+    public class Pose : BaseModel
     {
         public string OwnerName { get; set; }
 

@@ -6,7 +6,7 @@ namespace FalloutRPG.Models
 {
     public class Campaign : BaseModel
     {
-        private Campaign() { }
+        protected Campaign() { }
 
         public Campaign(string name, Player owner, ulong roleId, ulong textChannelId)
         {

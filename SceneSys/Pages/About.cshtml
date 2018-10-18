@@ -5,5 +5,26 @@
 }
 <h2>@ViewData["Title"]</h2>
 <h3>@Model.Message</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Active</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in await Model.SceneRepository.FetchAllAsync())
+        {
+            <tr>
+                <td>@row.Id</td>
+                <td>@row.Title</td>
+                <td>@row.Description</td>
+                <td>@row.State</td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 <p>Use this area to provide additional information.</p>
