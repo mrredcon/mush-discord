@@ -13,6 +13,7 @@ namespace FalloutRPG.Models
         public bool State { get; set; }
 
         public string OwnerName { get; set; }
+        public int OwnerId { get; set; }
 
         public virtual ICollection<Pose> Poses { get; set; }
     }

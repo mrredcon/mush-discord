@@ -1,0 +1,37 @@
+﻿@page "{id:int?}"
+@model ScenesModel
+@{
+    if (String.IsNullOrEmpty(Model.OwnerName))
+    {
+        ViewData["Title"] = "Scenes";
+    }
+    else
+    {
+        ViewData["Title"] = $"Scenes by {Model.OwnerName}";
+    }
+
+}
+<h2>@ViewData["Title"]</h2>
+<table id="scenetable" class="table table-bordered">
+    <thead>
+        <tr>
+            <th class="scene_id_row">ID</th>
+            <th class="scene_state_row">State</th>
+            <th class="scene_owner_row">Owner</th>
+            <th class="scene_title_row">Title</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var scene in Model.Scenes.OrderByDescending(x => x.Id))
+        {
+            <tr>
+                <td><a asp-page="./ViewScene" asp-route-id="@scene.Id">@scene.Id</a></td>
+                <td>@scene.State.ToString()</td>
+                <td><a asp-page="./Scenes" asp-route-id="@scene.OwnerId">@scene.OwnerName</a></td>
+                <td><a asp-page="./ViewScene" asp-route-id="@scene.Id">@scene.Title</a></td>
+                <td>@scene.Description</td>
+            </tr>
+        }
+    </tbody>
+</table>
