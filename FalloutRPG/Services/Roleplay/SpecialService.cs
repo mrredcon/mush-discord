@@ -65,14 +65,21 @@ namespace FalloutRPG.Services.Roleplay
         /// Returns the value of the specified character's given skill.
         /// </summary>
         /// <returns>Returns false if character or skills are null.</returns>
-        public bool SetSpecial(Character character, Globals.SpecialType special, int newValue)
+        public bool SetSpecial(Special specialSheet, Globals.SpecialType special, int newValue)
         {
-            if (character == null || !IsSpecialSet(character))
+            if (!IsSpecialSet(specialSheet))
                 return false;
 
-            typeof(Special).GetProperty(special.ToString()).SetValue(character.Special, newValue);
+            typeof(Special).GetProperty(special.ToString()).SetValue(specialSheet, newValue);
             return true;
         }
+
+        /// <summary>
+        /// Returns the value of the specified character's given skill.
+        /// </summary>
+        /// <returns>Returns false if character or skills are null.</returns>
+        public bool SetSpecial(Character character, Globals.SpecialType special, int newValue) =>
+            SetSpecial(character?.Special, special, newValue);
 
         /// <summary>
         /// Checks if each number in SPECIAL is between 1 and 10
@@ -109,22 +116,28 @@ namespace FalloutRPG.Services.Roleplay
         /// <summary>
         /// Checks if a character's special has been set.
         /// </summary>
-        public bool IsSpecialSet(Character character)
+        public bool IsSpecialSet(Special specialSheet)
         {
-            if (character == null || character.Special == null) return false;
+            if (specialSheet == null) return false;
 
-            var properties = character.Special.GetType().GetProperties();
+            var properties = specialSheet.GetType().GetProperties();
 
             foreach (var prop in properties)
             {
                 if (prop.Name.Equals("CharacterId") || prop.Name.Equals("Id"))
                     continue;
 
-                var value = Convert.ToInt32(prop.GetValue(character.Special));
+                var value = Convert.ToInt32(prop.GetValue(specialSheet));
                 if (value == 0) return false;
             }
 
             return true;
         }
+
+        /// <summary>
+        /// Checks if a character's special has been set.
+        /// </summary>
+        public bool IsSpecialSet(Character character) =>
+            IsSpecialSet(character?.Special);
     }
 }

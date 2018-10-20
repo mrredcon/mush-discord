@@ -3,9 +3,11 @@ using Discord.Commands;
 using FalloutRPG.Addons;
 using FalloutRPG.Constants;
 using FalloutRPG.Helpers;
+using FalloutRPG.Models;
 using FalloutRPG.Services;
 using FalloutRPG.Services.Roleplay;
 using System;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace FalloutRPG.Modules.Roleplay
@@ -56,22 +58,17 @@ namespace FalloutRPG.Modules.Roleplay
                     return;
                 }
 
-                var embed = EmbedHelper.BuildBasicEmbed("Command: $character skills",
-                    $"**Name:** {character.Name}\n" +
-                    $"**Barter:** {character.Skills.Barter}\n" +
-                    $"**Energy Weapons:** {character.Skills.EnergyWeapons}\n" +
-                    $"**Explosives:** {character.Skills.Explosives}\n" +
-                    $"**Guns:** {character.Skills.Guns}\n" +
-                    $"**Lockpick:** {character.Skills.Lockpick}\n" +
-                    $"**Medicine:** {character.Skills.Medicine}\n" +
-                    $"**MeleeWeapons:** {character.Skills.MeleeWeapons}\n" +
-                    $"**Repair:** {character.Skills.Repair}\n" +
-                    $"**Science:** {character.Skills.Science}\n" +
-                    $"**Sneak:** {character.Skills.Sneak}\n" +
-                    $"**Speech:** {character.Skills.Speech}\n" +
-                    $"**Survival:** {character.Skills.Survival}\n" +
-                    $"**Unarmed:** {character.Skills.Unarmed}\n" +
-                    $"*You have {character.SkillPoints} left to spend! ($char skills spend)*");
+                StringBuilder sb = new StringBuilder($"**Name:** {character.Name}\n");
+
+                foreach (var prop in typeof(SkillSheet).GetProperties())
+                {
+                    if (prop.Name.Equals("Id") || prop.Name.Equals("CharacterId"))
+                        continue;
+                    sb.Append($"**{prop.Name}**: {prop.GetValue(character.Skills)}\n");
+                }
+                sb.Append($"*You have {character.SkillPoints} left to spend! ($char skills spend)*");
+
+                var embed = EmbedHelper.BuildBasicEmbed("Command: $character skills", sb.ToString());
 
                 await ReplyAsync(userInfo.Mention, embed: embed);
             }

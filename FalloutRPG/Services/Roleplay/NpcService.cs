@@ -48,32 +48,8 @@ namespace FalloutRPG.Services.Roleplay
             Character newNpc = new NonPlayerCharacter
             {
                 Name = name,
-                Special = new Special
-                {
-                    Strength     = preset.Strength     + _rand.Next(preset.StrengthRange     * -1, preset.StrengthRange     + 1),
-                    Perception   = preset.Perception   + _rand.Next(preset.PerceptionRange   * -1, preset.PerceptionRange   + 1),
-                    Endurance    = preset.Endurance    + _rand.Next(preset.EnduranceRange    * -1, preset.EnduranceRange    + 1),
-                    Charisma     = preset.Charisma     + _rand.Next(preset.CharismaRange     * -1, preset.CharismaRange     + 1),
-                    Intelligence = preset.Intelligence + _rand.Next(preset.IntelligenceRange * -1, preset.IntelligenceRange + 1),
-                    Agility      = preset.Agility      + _rand.Next(preset.AgilityRange      * -1, preset.AgilityRange      + 1),
-                    Luck         = preset.Luck         + _rand.Next(preset.LuckRange         * -1, preset.LuckRange         + 1)
-                },
-                Skills = new SkillSheet
-                {
-                    Barter        = preset.Barter        + _rand.Next(preset.BarterRange        * -1, preset.BarterRange        + 1),
-                    EnergyWeapons = preset.EnergyWeapons + _rand.Next(preset.EnergyWeaponsRange * -1, preset.EnergyWeaponsRange + 1),
-                    Explosives    = preset.Explosives    + _rand.Next(preset.ExplosivesRange    * -1, preset.ExplosivesRange    + 1),
-                    Guns          = preset.Guns          + _rand.Next(preset.GunsRange          * -1, preset.GunsRange          + 1),
-                    Lockpick      = preset.Lockpick      + _rand.Next(preset.LockpickRange      * -1, preset.LockpickRange      + 1),
-                    Medicine      = preset.Medicine      + _rand.Next(preset.MedicineRange      * -1, preset.MedicineRange      + 1),
-                    MeleeWeapons  = preset.MeleeWeapons  + _rand.Next(preset.MeleeWeaponsRange  * -1, preset.MeleeWeaponsRange  + 1),
-                    Repair        = preset.Repair        + _rand.Next(preset.RepairRange        * -1, preset.RepairRange        + 1),
-                    Science       = preset.Science       + _rand.Next(preset.ScienceRange       * -1, preset.ScienceRange       + 1),
-                    Sneak         = preset.Sneak         + _rand.Next(preset.SneakRange         * -1, preset.SneakRange         + 1),
-                    Speech        = preset.Speech        + _rand.Next(preset.SpeechRange        * -1, preset.SpeechRange        + 1),
-                    Survival      = preset.Survival      + _rand.Next(preset.SurvivalRange      * -1, preset.SurvivalRange      + 1),
-                    Unarmed       = preset.Unarmed       + _rand.Next(preset.UnarmedRange       * -1, preset.UnarmedRange       + 1)
-                }
+                Special = preset.Special,
+                Skills = preset.Skills
             };
 
             var timer = new Timer();

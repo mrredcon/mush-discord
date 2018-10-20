@@ -1,6 +1,7 @@
 ﻿using FalloutRPG.Constants;
 using FalloutRPG.Models;
 using System;
+using System.Collections;
 using System.Threading.Tasks;
 
 namespace FalloutRPG.Services.Roleplay
@@ -20,43 +21,21 @@ namespace FalloutRPG.Services.Roleplay
         }
 
         /// <summary>
-        /// Set character's tag skills.
-        /// </summary>
-        public async Task SetTagSkills(Character character, Globals.SkillType tag1, Globals.SkillType tag2, Globals.SkillType tag3)
-        {
-            if (character == null) throw new ArgumentNullException("character");
-
-            if (!_specService.IsSpecialSet(character))
-                throw new Exception(Exceptions.CHAR_SPECIAL_NOT_FOUND);
-
-            if (!AreUniqueTags(tag1, tag2, tag3))
-                throw new ArgumentException(Exceptions.CHAR_TAGS_NOT_UNIQUE);
-
-            InitializeSkills(character);
-            
-            SetTagSkill(character, tag1);
-            SetTagSkill(character, tag2);
-            SetTagSkill(character, tag3);
-
-            await _charService.SaveCharacterAsync(character);
-        }
-
-        /// <summary>
         /// Checks if character's skills are set.
         /// </summary>
-        public bool AreSkillsSet(Character character)
+        public bool AreSkillsSet(SkillSheet skillSheet)
         {
-            if (character == null || character.Skills == null)
+            if (skillSheet == null)
                 return false;
 
-            var properties = character.Skills.GetType().GetProperties();
+            var properties = skillSheet.GetType().GetProperties();
 
             foreach (var prop in properties)
             {
                 if (prop.Name.Equals("CharacterId") || prop.Name.Equals("Id"))
                     continue;
 
-                var value = Convert.ToInt32(prop.GetValue(character.Skills));
+                var value = Convert.ToInt32(prop.GetValue(skillSheet));
                 if (value == 0) return false;
             }
 
@@ -64,29 +43,49 @@ namespace FalloutRPG.Services.Roleplay
         }
 
         /// <summary>
+        /// Checks if character's skills are set.
+        /// </summary>
+        public bool AreSkillsSet(Character character) =>
+            AreSkillsSet(character?.Skills);
+
+        /// <summary>
         /// Returns the value of the specified character's given skill.
         /// </summary>
         /// <returns>Returns 0 if character or skills are null.</returns>
-        public int GetSkill(Character character, Globals.SkillType skill)
+        public int GetSkill(SkillSheet skillSheet, Globals.SkillType skill)
         {
-            if (character == null || !AreSkillsSet(character))
+            if (!AreSkillsSet(skillSheet))
                 return 0;
 
-            return (int)typeof(SkillSheet).GetProperty(skill.ToString()).GetValue(character.Skills);
+            return (int)typeof(SkillSheet).GetProperty(skill.ToString()).GetValue(skillSheet);
+        }
+
+        /// <summary>
+        /// Returns the value of the specified character's given skill.
+        /// </summary>
+        /// <returns>Returns 0 if character or skills are null.</returns>
+        public int GetSkill(Character character, Globals.SkillType skill) =>
+            GetSkill(character?.Skills, skill);
+
+        /// <summary>
+        /// Returns the value of the specified character's given skill.
+        /// </summary>
+        /// <returns>Returns false if character or skills are null.</returns>
+        public bool SetSkill(SkillSheet skillSheet, Globals.SkillType skill, int newValue)
+        {
+            if (!AreSkillsSet(skillSheet))
+                return false;
+
+            typeof(SkillSheet).GetProperty(skill.ToString()).SetValue(skillSheet, newValue);
+            return true;
         }
 
         /// <summary>
         /// Returns the value of the specified character's given skill.
         /// </summary>
         /// <returns>Returns false if character or skills are null.</returns>
-        public bool SetSkill(Character character, Globals.SkillType skill, int newValue)
-        {
-            if (character == null || !AreSkillsSet(character))
-                return false;
-
-            typeof(SkillSheet).GetProperty(skill.ToString()).SetValue(character.Skills, newValue);
-            return true;
-        }
+        public bool SetSkill(Character character, Globals.SkillType skill, int newValue) =>
+            SetSkill(character?.Skills, skill, newValue);
 
         /// <summary>
         /// Gives character their skill points from leveling up.
@@ -133,72 +132,6 @@ namespace FalloutRPG.Services.Roleplay
 
             SetSkill(character, skill, skillVal + points);
             character.SkillPoints -= points;
-        }
-
-        /// <summary>
-        /// Checks if the tag name matches any of the skill names.
-        /// </summary>
-        private bool IsValidSkillName(string skill)
-        {
-            skill = skill.Trim();
-
-            foreach (var name in Globals.SKILL_NAMES)
-                if (skill.Equals(name, StringComparison.InvariantCultureIgnoreCase))
-                    return true;
-
-            return false;
-        }
-
-        /// <summary>
-        /// Checks if all the tags are unique.
-        /// </summary>
-        private bool AreUniqueTags(Globals.SkillType tag1, Globals.SkillType tag2, Globals.SkillType tag3)
-        {
-            if (tag1.Equals(tag2) ||
-                tag1.Equals(tag3) ||
-                tag2.Equals(tag3))
-                return false;
-
-            return true;
-        }
-
-        /// <summary>
-        /// Sets a character's tag skill.
-        /// </summary>
-        private void SetTagSkill(Character character, Globals.SkillType tag)
-        {
-            SetSkill(character, tag, GetSkill(character, tag) + 15);
-        }
-
-        /// <summary>
-        /// Initializes a character's skills.
-        /// </summary>
-        public void InitializeSkills(Character character)
-        {
-            character.Skills = new SkillSheet()
-            {
-                Barter = CalculateSkill(character.Special.Charisma, character.Special.Luck),
-                EnergyWeapons = CalculateSkill(character.Special.Perception, character.Special.Luck),
-                Explosives = CalculateSkill(character.Special.Perception, character.Special.Luck),
-                Guns = CalculateSkill(character.Special.Agility, character.Special.Luck),
-                Lockpick = CalculateSkill(character.Special.Perception, character.Special.Luck),
-                Medicine = CalculateSkill(character.Special.Intelligence, character.Special.Luck),
-                MeleeWeapons = CalculateSkill(character.Special.Strength, character.Special.Luck),
-                Repair = CalculateSkill(character.Special.Intelligence, character.Special.Luck),
-                Science = CalculateSkill(character.Special.Intelligence, character.Special.Luck),
-                Sneak = CalculateSkill(character.Special.Agility, character.Special.Luck),
-                Speech = CalculateSkill(character.Special.Charisma, character.Special.Luck),
-                Survival = CalculateSkill(character.Special.Endurance, character.Special.Luck),
-                Unarmed = CalculateSkill(character.Special.Endurance, character.Special.Luck)
-            };
-        }
-
-        /// <summary>
-        /// Calculates a skill based on New Vegas formula.
-        /// </summary>
-        private int CalculateSkill(int stat, int luck)
-        {
-            return (2 + (2 * stat) + (luck / 2));
         }
     }
 }

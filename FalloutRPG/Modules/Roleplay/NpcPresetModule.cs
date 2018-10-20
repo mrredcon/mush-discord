@@ -19,13 +19,17 @@ namespace FalloutRPG.Modules.Roleplay
     [RequireOwner(Group = "Permission")]
     public class NpcPresetModule : ModuleBase<SocketCommandContext>
     {
-        private readonly NpcPresetService _presetService;
         private readonly HelpService _helpService;
+        private readonly NpcPresetService _presetService;
+        private readonly SkillsService _skillsService;
+        private readonly SpecialService _specialService;
 
-        public NpcPresetModule(NpcPresetService presetService, HelpService helpService)
+        public NpcPresetModule(HelpService helpService, NpcPresetService presetService, SkillsService skillsService, SpecialService specialService)
         {
-            _presetService = presetService;
             _helpService = helpService;
+            _presetService = presetService;
+            _skillsService = skillsService;
+            _specialService = specialService;
         }
 
         [Command]
@@ -38,87 +42,79 @@ namespace FalloutRPG.Modules.Roleplay
         [Command("create")]
         public async Task CreatePreset(string name)
         {
-            if (await _presetService.CreateNpcPreset(name))
-                await ReplyAsync(String.Format(Messages.NPC_PRESET_CREATE, name, Context.User.Mention));
-            else
-                await ReplyAsync(String.Format(Messages.ERR_NPC_PRESET_CREATE, Context.User.Mention));
-        }
-
-        [Command("create")]
-        public async Task CreatePreset(string name, int str, int per, int end, int cha, int @int, int agi, int luc)
-        {
-            if (await _presetService.CreateNpcPreset(name, str, per, end, cha, @int, agi, luc, true))
-                await ReplyAsync(String.Format(Messages.NPC_PRESET_CREATE, name, Context.User.Mention));
-            else
-                await ReplyAsync(String.Format(Messages.ERR_NPC_PRESET_CREATE, Context.User.Mention));
-        }
-
-        [Command("enable")]
-        public async Task EnablePreset(string name)
-        {
-            if (await _presetService.EditNpcPreset(name, "Enabled", true))
-                await ReplyAsync(String.Format(Messages.NPC_PRESET_ENABLE, name, Context.User.Mention));
-            else
-                await ReplyAsync(String.Format(Messages.ERR_NPC_PRESET_ENABLE, name, Context.User.Mention));
-        }
-
-        [Command("disable")]
-        public async Task DisablePreset(string name)
-        {
-            if (await _presetService.EditNpcPreset(name, "Enabled", false))
-                await ReplyAsync(String.Format(Messages.NPC_PRESET_DISABLE, name, Context.User.Mention));
-            else
-                await ReplyAsync(String.Format(Messages.ERR_NPC_PRESET_DISABLE, name, Context.User.Mention));
-        }
-
-        [Command("edit")]
-        public async Task EditPreset(string name, Globals.SpecialType special, int value) =>
-            await EditPreset(name, special.ToString(), value);
-
-        [Command("edit")]
-        public async Task EditPreset(string name, Globals.SkillType skill, int value) =>
-            await EditPreset(name, skill.ToString(), value);
-
-        [Command("edit")]
-        public async Task EditPreset(string name, string attribute, int value)
-        {
-            if (attribute.Equals("Enabled", StringComparison.OrdinalIgnoreCase))
+            try
             {
-                await ReplyAsync(String.Format(Messages.ERR_NPC_PRESET_EDIT, Context.User.Mention));
+                await _presetService.CreateNpcPreset(name);
+            }
+            catch (Exception e)
+            {
+                await ReplyAsync(Messages.FAILURE_EMOJI + e.Message + Context.User.Mention);
+            }
+        }
+
+        [Command("toggle")]
+        public async Task TogglePreset(string name)
+        {
+            var preset = await _presetService.GetNpcPreset(name);
+            if (preset == null)
+            {
+                await ReplyAsync(String.Format(Messages.ERR_NPC_PRESET_NOT_FOUND, Context.User.Mention));
                 return;
             }
 
-            if (await _presetService.EditNpcPreset(name, attribute, value))
-                await ReplyAsync(String.Format(Messages.NPC_PRESET_EDIT, StringHelper.ToTitleCase(name), StringHelper.ToTitleCase(attribute), value, Context.User.Mention));
-            else
-                await ReplyAsync(String.Format(Messages.ERR_NPC_PRESET_EDIT, Context.User.Mention));
+            preset.Enabled = !preset.Enabled;
+            await _presetService.SaveNpcPreset(preset);
+        }
+
+        [Command("edit")]
+        public async Task EditPreset(string name, Globals.SkillType skill, int value)
+        {
+            var preset = await _presetService.GetNpcPreset(name);
+
+            if (preset == null)
+            {
+                await ReplyAsync(String.Format(Messages.ERR_NPC_PRESET_NOT_FOUND, Context.User.Mention));
+                return;
+            }
+
+            _skillsService.SetSkill(preset.Skills, skill, value);
+            await _presetService.SaveNpcPreset(preset);
+
+            await ReplyAsync(String.Format(Messages.NPC_PRESET_EDIT, name, skill.ToString(), value, Context.User.Mention));
+        }
+
+        [Command("edit")]
+        public async Task EditPreset(string name, Globals.SpecialType special, int value)
+        {
+            var preset = await _presetService.GetNpcPreset(name);
+
+            if (preset == null)
+            {
+                await ReplyAsync(String.Format(Messages.ERR_NPC_PRESET_NOT_FOUND, Context.User.Mention));
+                return;
+            }
+
+            _specialService.SetSpecial(preset.Special, special, value);
+            await _presetService.SaveNpcPreset(preset);
+
+            await ReplyAsync(String.Format(Messages.NPC_PRESET_EDIT_SPECIAL, name, Context.User.Mention));
         }
 
         [Command("edit")]
         public async Task EditPreset(string name, int str, int per, int end, int cha, int @int, int agi, int luc)
         {
-            await _presetService.EditNpcPreset(name, "Strength", str);
-            await _presetService.EditNpcPreset(name, "Perception", per);
-            await _presetService.EditNpcPreset(name, "Endurance", end);
-            await _presetService.EditNpcPreset(name, "Charisma", cha);
-            await _presetService.EditNpcPreset(name, "Intelligence", @int);
-            await _presetService.EditNpcPreset(name, "Agility", agi);
-            await _presetService.EditNpcPreset(name, "Luck", luc);
+            var preset = await _presetService.GetNpcPreset(name);
 
-            await ReplyAsync(String.Format(Messages.NPC_PRESET_EDIT_SPECIAL, name, Context.User.Mention));
-        }
+            if (preset == null)
+            {
+                await ReplyAsync(String.Format(Messages.ERR_NPC_PRESET_NOT_FOUND, Context.User.Mention));
+                return;
+            }
 
-        [Command("initialize")]
-        [Alias("init")]
-        public async Task InitializePresetSkills(string name)
-        {
-            NpcPreset preset = await _presetService.GetNpcPreset(name);
-
-            _presetService.InitializeNpcPresetSkills(preset);
-
+            preset.Special = new Special { Strength = str, Perception = per, Endurance = end, Charisma = cha, Intelligence = @int, Agility = agi, Luck = luc };
             await _presetService.SaveNpcPreset(preset);
 
-            await ReplyAsync(String.Format(Messages.NPC_PRESET_SKILLS_INIT, name, Context.User.Mention));
+            await ReplyAsync(String.Format(Messages.NPC_PRESET_EDIT_SPECIAL, name, Context.User.Mention));
         }
 
         [Command("view")]
@@ -134,8 +130,11 @@ namespace FalloutRPG.Modules.Roleplay
             StringBuilder sb = new StringBuilder();
 
             foreach (var prop in typeof(NpcPreset).GetProperties())
-                if (Globals.SKILL_NAMES.Contains(prop.Name) || Globals.SPECIAL_NAMES.Contains(prop.Name) || prop.Name.Equals("Enabled") || prop.Name.Contains("Range"))
-                    sb.Append($"{prop.Name}: {prop.GetValue(preset)}\n");
+            {
+                if (prop.Name.Equals("Id"))
+                    continue;
+                sb.Append($"{prop.Name}: {prop.GetValue(preset)}\n");
+            }
 
             await dmChannel.SendMessageAsync(Context.User.Mention, embed: EmbedHelper.BuildBasicEmbed($"Preset info for {preset.Name}:", sb.ToString()));
         }
