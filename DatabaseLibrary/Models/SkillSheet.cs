@@ -2,6 +2,8 @@
 {
     public class SkillSheet : BaseModel
     {
+        public int CharacterId { get; set; }
+
         // Strength
         public int Archery { get; set; }
         public int Athletics { get; set; }
