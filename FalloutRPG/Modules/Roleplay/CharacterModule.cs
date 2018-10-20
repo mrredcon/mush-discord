@@ -81,7 +81,7 @@ namespace FalloutRPG.Modules.Roleplay
 
             try
             {
-                await _charService.CreatePlayerCharacterAsync(userInfo.Id, name, Context.Channel.Id);
+                await _charService.CreatePlayerCharacterAsync(userInfo.Id, name);
                 await ReplyAsync(string.Format(Messages.CHAR_CREATED_SUCCESS, userInfo.Mention));
             }
             catch (Exception e)

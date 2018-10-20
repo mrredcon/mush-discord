@@ -50,7 +50,7 @@ namespace FalloutRPG.Services.Roleplay
         /// <summary>
         /// Creates a new character.
         /// </summary>
-        public async Task<PlayerCharacter> CreatePlayerCharacterAsync(ulong discordId, string name, ulong channelId)
+        public async Task<PlayerCharacter> CreatePlayerCharacterAsync(ulong discordId, string name)
         {
             if (!StringHelper.IsOnlyLetters(name))
                 throw new Exception(Exceptions.CHAR_NAMES_NOT_LETTERS);
