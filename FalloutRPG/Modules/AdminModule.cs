@@ -52,19 +52,6 @@ namespace FalloutRPG.Modules
             await ReplyAsync(string.Format(Messages.ADM_GAVE_MONEY, Context.User.Mention));
         }
 
-        [Command("giveskillpoints")]
-        [RequireOwner]
-        public async Task GiveSkillPointsAsync(IUser user, int points)
-        {
-            var character = await _charService.GetPlayerCharacterAsync(user.Id);
-            if (character == null) return;
-
-            character.SkillPoints += points;
-
-            await _charService.SaveCharacterAsync(character);
-            await ReplyAsync(string.Format(Messages.ADM_GAVE_SKILL_POINTS, Context.User.Mention));
-        }
-
         [Command("giveitem")]
         public async Task AddItem(IUser user, string itemName)
         {

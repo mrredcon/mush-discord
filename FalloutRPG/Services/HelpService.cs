@@ -115,7 +115,7 @@ namespace FalloutRPG.Services
             var userInfo = context.User;
             var message = new StringBuilder();
 
-            foreach (var skill in Globals.SKILL_NAMES)
+            foreach (var skill in Globals.SKILL_PROPER_NAMES)
                 message.Append($"{skill}\n");
 
             var embed = EmbedHelper.BuildBasicEmbed("Command: $help skills", message.ToString());

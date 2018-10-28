@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FalloutRPG.Services.Roleplay;
+using System;
 
 namespace FalloutRPG.Constants
 {
@@ -10,13 +11,13 @@ namespace FalloutRPG.Constants
         public const string CHAR_NAMES_LENGTH = "Character name must be between 2-24 letters each.";
         public const string CHAR_NAMES_NOT_UNIQUE = "Character name was not unique for your Discord ID.";
         public const string CHAR_SPECIAL_LENGTH = "The input special length did not equal 7.";
-        public const string CHAR_SPECIAL_DOESNT_ADD_UP = "SPECIAL does not add up to 40.";
-        public const string CHAR_SPECIAL_NOT_IN_RANGE = "One or more SPECIAL attributes were not between 1 and 10.";
+        public static readonly string CHAR_SPECIAL_DOESNT_ADD_UP = $"SPECIAL does not add up to {SpecialService.DEFAULT_SPECIAL_POINTS}";
+        public static readonly string CHAR_SPECIAL_NOT_IN_RANGE = $"One or more SPECIAL attributes were not between {SpecialService.MIN_SPECIAL} and {SpecialService.MAX_SPECIAL}.";
         public const string CHAR_SPECIAL_NOT_FOUND = "Unable to find SPECIAL for that character.";
         public const string CHAR_INVALID_TAG_NAMES = "One or more tag names were invalid.";
         public const string CHAR_INVALID_SKILL_NAME = "Skill name was invalid.";
         public const string CHAR_INVALID_STAT_NAME = "Given stat parameter did not match a S.P.E.C.I.A.L. stat or Skill.";
-        public const string CHAR_TAGS_NOT_UNIQUE = "One or more tag names were identical.";
+        public const string CHAR_TAGS_OUT_OF_RANGE = "The given tag value was out of range. (Only two Skills can be tagged to 6.)";
         public const string CHAR_CHARACTER_IS_NULL = "Character is null.";
         public const string CHAR_NOT_ENOUGH_SKILL_POINTS = "Character does not have enough skill points.";
         public const string CHAR_SKILL_POINTS_GOES_OVER_MAX = "Unable to add skill points because it will take the skill above the max level.";

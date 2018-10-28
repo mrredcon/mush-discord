@@ -8,8 +8,9 @@ namespace FalloutRPG.Services.Roleplay
 {
     public class SpecialService
     {
-        private const int DEFAULT_SPECIAL_POINTS = 40;
-        private const int MAX_SPECIAL = 10;
+        public const int DEFAULT_SPECIAL_POINTS = 29;
+        public const int MIN_SPECIAL = 1;
+        public const int MAX_SPECIAL = 8;
 
         private readonly CharacterService _charService;
 
@@ -31,35 +32,29 @@ namespace FalloutRPG.Services.Roleplay
             if (special.Sum() != DEFAULT_SPECIAL_POINTS)
                 throw new ArgumentException(Exceptions.CHAR_SPECIAL_DOESNT_ADD_UP);
 
-            InitializeSpecial(character, special);
+            character.Special = InitializeSpecial(special);
 
             await _charService.SaveCharacterAsync(character);
-        }
-
-        /// <summary>
-        /// Checks if the special name is valid.
-        /// </summary>
-        private bool IsValidSpecialName(string special)
-        {
-            foreach (var name in Globals.SPECIAL_NAMES)
-                if (special.Equals(name, StringComparison.InvariantCultureIgnoreCase) ||
-                    special.Equals(name.Substring(0, 3), StringComparison.InvariantCultureIgnoreCase))
-                    return true;
-
-            return false;
         }
 
         /// <summary>
         /// Returns the value of the specified character's given special.
         /// </summary>
         /// <returns>Returns 0 if character or special values are null.</returns>
-        public int GetSpecial(Character character, Globals.SpecialType special)
+        public int GetSpecial(Special specialSheet, Globals.SpecialType special)
         {
-            if (character == null || !IsSpecialSet(character))
+            if (specialSheet == null || !IsSpecialSet(specialSheet))
                 return 0;
 
-            return (int)typeof(Special).GetProperty(special.ToString()).GetValue(character.Special);
+            return (int)typeof(Special).GetProperty(special.ToString()).GetValue(specialSheet);
         }
+
+        /// <summary>
+        /// Returns the value of the specified character's given special.
+        /// </summary>
+        /// <returns>Returns 0 if character or special values are null.</returns>
+        public int GetSpecial(Character character, Globals.SpecialType special) =>
+            GetSpecial(character?.Special, special);
 
         /// <summary>
         /// Returns the value of the specified character's given skill.
@@ -89,19 +84,23 @@ namespace FalloutRPG.Services.Roleplay
         {
             if (special.Length != 7) return false;
 
-            foreach (var sp in special)
-                if (sp < 1 || sp > 10)
+            foreach (int sp in special)
+                if (sp < MIN_SPECIAL || sp > MAX_SPECIAL)
                     return false;
+
+            // Unique MUSH rules :/
+            if (special.Where(sp => sp == 8).Count() > 2)
+                return false;
 
             return true;
         }
 
         /// <summary>
-        /// Initializes character's special.
+        /// Initializes a special.
         /// </summary>
-        private void InitializeSpecial(Character character, int[] special)
+        private Special InitializeSpecial(int[] special)
         {
-            character.Special = new Special()
+            return new Special()
             {
                 Strength = special[0],
                 Perception = special[1],
@@ -120,16 +119,8 @@ namespace FalloutRPG.Services.Roleplay
         {
             if (specialSheet == null) return false;
 
-            var properties = specialSheet.GetType().GetProperties();
-
-            foreach (var prop in properties)
-            {
-                if (prop.Name.Equals("CharacterId") || prop.Name.Equals("Id"))
-                    continue;
-
-                var value = Convert.ToInt32(prop.GetValue(specialSheet));
-                if (value == 0) return false;
-            }
+            foreach (int value in specialSheet.SpecialArray)
+                if (value < MIN_SPECIAL) return false;
 
             return true;
         }

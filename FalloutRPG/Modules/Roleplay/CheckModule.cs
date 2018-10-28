@@ -45,11 +45,6 @@ namespace FalloutRPG.Modules.Roleplay
                 await ReplyAsync(String.Format(Messages.ERR_CHAR_NOT_FOUND, user.Username));
                 return;
             }
-            if (!_skillsService.AreSkillsSet(character))
-            {
-                await ReplyAsync(String.Format(Messages.ERR_SKILLS_NOT_FOUND, user.Username));
-                return;
-            }
 
             int skillValue = _skillsService.GetSkill(character, skill);
 

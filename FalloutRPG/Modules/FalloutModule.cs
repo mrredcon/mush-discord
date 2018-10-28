@@ -37,9 +37,9 @@ namespace FalloutRPG.Modules
 
         [RequireOwner]
         [Command("echo")]
-        public async Task EchoAsync(string input, string desc)
+        public async Task EchoAsync(string message)
         {
-            await _sceneRepository.AddAsync(new Scene() { Title = input, Description = desc });
+            await ReplyAsync(message);
         }
     }
 }

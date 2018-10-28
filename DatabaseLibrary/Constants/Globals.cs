@@ -242,25 +242,25 @@ namespace FalloutRPG.Constants
             { "LUC", SpecialType.Luck },
         };
 
-        public static string[] SKILL_NAMES = new string[]
+        public static string[] SKILL_PROPER_NAMES = new string[]
         {
             // Strength
-            "Archery", "Athletics", "Construction", "HeavyWeapons", "Intimidation", "Melee", "Unarmed",
+            "Archery", "Athletics", "Construction", "Heavy Weapons", "Intimidation", "Melee", "Unarmed",
             // Perception
-            "Alertness", "Art", "Brewing", "Cooking", "Deception", "Explosives", "FirstAid", "Gunsmith", "Husbandry", "Investigation", "Music", "Repair", "Security",
+            "Alertness", "Art", "Brewing", "Cooking", "Deception", "Explosives", "First Aid", "Gunsmith", "Husbandry", "Investigation", "Music", "Repair", "Security",
             // Endurance
             "Blacksmith", "Resistance", "Survival", "Toughness",
             // Charisma
             "Barter", "Command", "Courage", "Manipulation", "Performance", "Persuasion", "Seduction", "Streetwise",
             // Intelligence
-            "EnergyWeapons", "Hacking", "History", "Literature", "Medicine", "Pharmaceuticals", "Science", "Tactics", "Technology",
+            "Energy Weapons", "Hacking", "History", "Literature", "Medicine", "Pharmaceuticals", "Science", "Tactics", "Technology",
             // Agility
             "Acrobatics", "Dodge", "Drive", "Firearms", "Pilot", "Riding", "Stealth", "Tailoring",
             // Luck
-            "Escape", "Gamble", "ImprovisedWeapons", "JuryRig", "Scavenge"
+            "Escape", "Gamble", "Improvised Weapons", "Jury Rig", "Scavenge"
         };
 
-        public static string[] SPECIAL_NAMES = new string[]
+        public static string[] SPECIAL_PROPER_NAMES = new string[]
         {
             "Strength",
             "Perception",

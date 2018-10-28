@@ -1,4 +1,8 @@
-﻿namespace FalloutRPG.Models
+﻿using FalloutRPG.Constants;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace FalloutRPG.Models
 {
     public class SkillSheet : BaseModel
     {
@@ -71,5 +75,30 @@
         public int ImprovisedWeapons { get; set; }
         public int JuryRig { get; set; }
         public int Scavenge { get; set; }
+
+        [NotMapped]
+        public int[] SkillsArray
+        {
+            get
+            {
+                return new int[]
+                {
+                    // Strength
+                    Archery, Athletics, Construction, HeavyWeapons, Intimidation, Melee, Unarmed,
+                    // Perception
+                    Alertness, Art, Brewing, Cooking, Deception, Explosives, FirstAid, Gunsmith, Husbandry, Investigation, Music, Repair, Security,
+                    // Endurance
+                    Blacksmith, Resistance, Survival, Toughness,
+                    // Charisma
+                    Barter, Command, Courage, Manipulation, Performance, Persuasion, Seduction, Streetwise,
+                    // Intelligence
+                    EnergyWeapons, Hacking, History, Literature, Medicine, Pharmaceuticals, Science, Tactics, Technology,
+                    // Agility
+                    Acrobatics, Dodge, Drive, Firearms, Pilot, Riding, Stealth, Tailoring,
+                    // Luck
+                    Escape, Gamble, ImprovisedWeapons, JuryRig, Scavenge
+                };
+            }
+        }
     }
 }

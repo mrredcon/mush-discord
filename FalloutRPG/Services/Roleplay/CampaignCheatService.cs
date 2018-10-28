@@ -78,21 +78,6 @@ namespace FalloutRPG.Services.Roleplay
             await _characterService.SaveCharacterAsync(character);
         }
 
-        public async Task SetCharacterSkillPointsAsync(ulong channelId, ulong senderId, ulong receiverId, int newValue)
-        {
-            if (newValue < 0)
-                throw new ArgumentOutOfRangeException("newValue", Exceptions.LEVEL_TOO_LOW);
-
-            var (isValid, character) = await CheckValidityAsync(channelId, senderId, receiverId);
-
-            if (character is PlayerCharacter pc)
-                pc.SkillPoints = newValue;
-            else
-                throw new Exception(Exceptions.CHAR_NOT_PLAYER);
-
-            await _characterService.SaveCharacterAsync(character);
-        }
-
         public async Task SetCharacterLevelAsync(ulong senderId, ulong receiverId, int level, ulong channelId)
         {
             if (level < 1)

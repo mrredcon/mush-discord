@@ -22,6 +22,7 @@ namespace FalloutRPG.Services.Roleplay
         private const int DEFAULT_EXP_RANGE_FROM = 10;
         private const int DEFAULT_EXP_RANGE_TO = 50;
         private const int COOLDOWN_INTERVAL = 60000;
+        private const char OOC_CHAR = '(';
 
         private readonly CharacterService _charService;
         private readonly SkillsService _skillsService;
@@ -56,15 +57,14 @@ namespace FalloutRPG.Services.Roleplay
             var userInfo = context.User;
             var character = await _charService.GetPlayerCharacterAsync(userInfo.Id);
 
-            if (character == null || context.Message.ToString().StartsWith("(")) return;
+            if (character == null || context.Message.ToString().StartsWith(OOC_CHAR)) return;
 
             var expToGive = GetRandomExperience();
 
             if (await GiveExperienceAsync(character, expToGive))
             {
-                var level = CalculateLevelForExperience(character.Experience);
                 await context.Channel.SendMessageAsync(
-                    string.Format(Messages.EXP_LEVEL_UP, userInfo.Mention, level));
+                    string.Format(Messages.EXP_LEVEL_UP, userInfo.Mention, character.Level));
             }
         }
 
@@ -81,18 +81,14 @@ namespace FalloutRPG.Services.Roleplay
             character.Experience += experience;
             await _charService.SaveCharacterAsync(character);
 
-            var levelUp = false;
-            var difference = character.Level - initialLevel;
+            var levelDifference = character.Level - initialLevel;
 
-            if (difference >= 1)
-            {
-                await OnLevelUpAsync(character, difference);
-                levelUp = true;
-            }
+            if (levelDifference >= 1)
+                await OnLevelUpAsync(character, levelDifference);
 
             AddToCooldown(character.Player.DiscordId);
             
-            return levelUp;
+            return levelDifference >= 1; // true if leveled up, false otherwise
         }
 
         /// <summary>
@@ -112,28 +108,9 @@ namespace FalloutRPG.Services.Roleplay
         public int CalculateExperienceForLevel(int level)
         {
             if (level < 1 || level > 1000) return -1;
-            return (level * (level - 1) / 2) * 1000;
-        }
-
-        /// <summary>
-        /// Calculates experience between the beginning of
-        /// one level and the next.
-        /// </summary>
-        public int CalculateExperienceToNextLevel(int level)
-        {
-            if (level < 1 || level > 1000) return -1;
-            return 50 + (150 * level);
-        }
-
-        /// <summary>
-        /// Calculates the remaining experience required
-        /// to get to the next level.
-        /// </summary>
-        public int CalculateRemainingExperienceToNextLevel(int experience)
-        {
-            var nextLevel = (CalculateLevelForExperience(experience) + 1);
-            var nextLevelExp = CalculateExperienceForLevel(nextLevel);
-            return (nextLevelExp - experience);
+            if (level == 1)
+                return 0;
+            return level * 1000;
         }
 
         /// <summary>
@@ -141,8 +118,7 @@ namespace FalloutRPG.Services.Roleplay
         /// </summary>
         public int CalculateLevelForExperience(int experience)
         {
-            if (experience == 0) return 1;
-            return Convert.ToInt32((Math.Sqrt(experience + 125) / (10 * Math.Sqrt(5))));
+            return experience / 1000 + 1;
         }
 
         /// <summary>
@@ -151,11 +127,7 @@ namespace FalloutRPG.Services.Roleplay
         /// </summary>
         public bool IsInExperienceEnabledChannel(ulong channelId)
         {
-            foreach (var channel in experienceEnabledChannels)
-                if (channelId == channel)
-                    return true;
-
-            return false;
+            return experienceEnabledChannels.Contains(channelId);
         }
 
         /// <summary>
@@ -179,16 +151,6 @@ namespace FalloutRPG.Services.Roleplay
         }
 
         /// <summary>
-        /// Checks if adding the experience will result in a level up.
-        /// </summary>
-        private bool WillLevelUp(Character character, int expToAdd)
-        {
-            if (character == null) throw new ArgumentNullException("character");
-            int nextLevelExp = CalculateExperienceForLevel(CalculateLevelForExperience(character.Experience) + 1);
-            return (character.Experience + expToAdd) >= nextLevelExp;
-        }
-
-        /// <summary>
         /// Called when a character levels up.
         /// </summary>
         private async Task OnLevelUpAsync(PlayerCharacter character, int times = 1)
@@ -196,10 +158,7 @@ namespace FalloutRPG.Services.Roleplay
             if (character == null) throw new ArgumentNullException("character");
             var user = _client.GetUser(character.Player.DiscordId);
 
-            for (int i = 0; i < times; i++)
-                _skillsService.GiveSkillPoints(character);
-
-            await user.SendMessageAsync(string.Format(Messages.SKILLS_LEVEL_UP, user.Mention, character.SkillPoints));
+            await user.SendMessageAsync(string.Format(Messages.SKILLS_LEVEL_UP, user.Mention, character.ExperiencePoints));
         }
 
         /// <summary>

@@ -78,7 +78,7 @@ namespace FalloutRPG.Services.Roleplay
                 Description = "",
                 Story = "",
                 Experience = 0,
-                SkillPoints = 0,
+                TagPoints = 36,
                 Money = 1000,
                 Special = new Special(),
                 Skills = new SkillSheet()

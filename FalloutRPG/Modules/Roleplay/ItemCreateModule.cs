@@ -15,12 +15,21 @@ namespace FalloutRPG.Modules.Roleplay
     public class ItemCreateModule : ModuleBase<SocketCommandContext>
     {
         private readonly ItemService _itemService;
-        private readonly IRepository<Item> _itemRepo;
 
-        public ItemCreateModule(ItemService itemService, IRepository<Item> itemRepository)
+        public ItemCreateModule(ItemService itemService)
         {
             _itemService = itemService;
-            _itemRepo = itemRepository;
+        }
+
+        private async Task<bool> ItemExists(string itemName)
+        {
+            if (await _itemService.GetItemAsync(itemName) is Item)
+            {
+                await ReplyAsync(String.Format(Messages.ERR_ITEM_EXISTS, Context.User.Mention));
+                return true;
+            }
+
+            return false;
         }
 
         [Command("ammo")]
@@ -30,7 +39,10 @@ namespace FalloutRPG.Modules.Roleplay
         [Command("ammo")]
         public async Task CreateItemAmmoAsync(string name, string desc, int value, double weight, double dtMult, int dtReduction)
         {
-            await _itemRepo.AddAsync(
+            if (await ItemExists(name))
+                return;
+
+            await _itemService.AddItemAsync(
                 new ItemAmmo
                 {
                     Name = name,
@@ -47,9 +59,12 @@ namespace FalloutRPG.Modules.Roleplay
         [Command("apparel")]
         public async Task CreateItemApparelAsync(string name, string desc, int value, double weight, string slot, int dt)
         {
+            if (await ItemExists(name))
+                return;
+
             if (Enum.TryParse(slot, true, out ApparelSlot appSlot))
             {
-                await _itemRepo.AddAsync(
+                await _itemService.AddItemAsync(
                     new ItemApparel
                     {
                         Name = name,
@@ -69,7 +84,10 @@ namespace FalloutRPG.Modules.Roleplay
         [Command("consumable")]
         public async Task CreateItemConsumableAsync(string name, string desc, int value, double weight)
         {
-            await _itemRepo.AddAsync(
+            if (await ItemExists(name))
+                return;
+
+            await _itemService.AddItemAsync(
                 new ItemConsumable
                 {
                     Name = name,
@@ -84,7 +102,10 @@ namespace FalloutRPG.Modules.Roleplay
         [Command("misc")]
         public async Task CreateItemMiscAsync(string name, string desc, int value, double weight)
         {
-            await _itemRepo.AddAsync(
+            if (await ItemExists(name))
+                return;
+
+            await _itemService.AddItemAsync(
                 new ItemMisc
                 {
                     Name = name,
@@ -96,10 +117,32 @@ namespace FalloutRPG.Modules.Roleplay
             await ReplyAsync(String.Format(Messages.ITEM_CREATE_SUCCESS, name, "Misc", Context.User.Mention));
         }
 
+        [Command("pack")]
+        public async Task CreateItemPackAsync(string name, string desc, int value, double weight)
+        {
+            if (await ItemExists(name))
+                return;
+
+            await _itemService.AddItemAsync(
+                new ItemPack
+                {
+                    Name = name,
+                    Description = desc,
+                    Value = value,
+                    Weight = weight,
+                    ItemChances = new List<PackEntry>()
+                });
+
+            await ReplyAsync(String.Format(Messages.ITEM_CREATE_SUCCESS, name, "Pack", Context.User.Mention));
+        }
+
         [Command("weapon")]
         public async Task CreateItemWeaponAsync(string name, string desc, int value, double weight, int damage,
             Globals.SkillType skill, int skillMin, string ammo, int ammoCapacity, int ammoOnAttack)
         {
+            if (await ItemExists(name))
+                return;
+
             Item item = await _itemService.GetItemAsync(ammo);
 
             if (item is ItemAmmo ammoItem)
@@ -118,7 +161,7 @@ namespace FalloutRPG.Modules.Roleplay
                     AmmoRemaining = ammoCapacity
                 };
                 weapon.Ammo.Add(ammoItem);
-                await _itemRepo.AddAsync(weapon);
+                await _itemService.AddItemAsync(weapon);
 
                 await ReplyAsync(String.Format(Messages.ITEM_CREATE_SUCCESS, name, "Weapon", Context.User.Mention));
             }

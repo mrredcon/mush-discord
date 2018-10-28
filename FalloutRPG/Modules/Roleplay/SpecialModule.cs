@@ -76,7 +76,7 @@ namespace FalloutRPG.Modules.Roleplay
                     return;
                 }
 
-                if (_specService.IsSpecialSet(character))
+                if (character.Level > 1)
                 {
                     await ReplyAsync(string.Format(Messages.ERR_SPECIAL_ALREADY_SET, userInfo.Mention));
                     return;

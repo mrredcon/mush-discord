@@ -16,8 +16,7 @@ namespace FalloutRPG.Models
         {
             get
             {
-                if (Experience == 0) return 1;
-                return Convert.ToInt32((Math.Sqrt(Experience + 125) / (10 * Math.Sqrt(5))));
+                return Experience / 1000 + 1;
             }
         }
 
@@ -25,17 +24,7 @@ namespace FalloutRPG.Models
         public virtual SkillSheet Skills { get; set; }
 
         public int HitPoints { get; set; }
-        [NotMapped]
-        public int HitPointsLimit
-        {
-            get
-            {
-                if (Special == null || Special.Endurance < 1)
-                    return -1;
-
-                return 95 + (Special.Endurance * 20) + (Level * 5);
-            }
-        }
+        public int HitPointsLimit { get; set; }
 
         public int ArmorClass { get; set; }
 

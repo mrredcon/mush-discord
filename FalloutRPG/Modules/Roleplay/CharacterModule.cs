@@ -46,8 +46,7 @@ namespace FalloutRPG.Modules.Roleplay
                 return;
             }
 
-            var level = _expService.CalculateLevelForExperience(character.Experience);
-            var expToNextLevel = _expService.CalculateRemainingExperienceToNextLevel(character.Experience);
+            var expToNextLevel = _expService.CalculateExperienceForLevel(character.Level + 1) - character.Experience;
 
             var description = string.IsNullOrEmpty(character.Description) ? "No description." : character.Description;
             var story = string.IsNullOrEmpty(character.Story) ? "No story." : character.Story;
@@ -58,7 +57,7 @@ namespace FalloutRPG.Modules.Roleplay
                 $"**Description:** {description}\n" +
                 $"**Story:** ($char story)\n" +
                 $"**Inventory:** ($char inventory)\n" +
-                $"**Level:** {level}\n" +
+                $"**Level:** {character.Level}\n" +
                 $"**Experience:** {character.Experience}\n" +
                 $"**To Next Level:** {expToNextLevel}\n" +
                 $"**Caps:** {character.Money}");

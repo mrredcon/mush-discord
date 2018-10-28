@@ -129,12 +129,13 @@ namespace FalloutRPG.Modules.Roleplay
 
             StringBuilder sb = new StringBuilder();
 
-            foreach (var prop in typeof(NpcPreset).GetProperties())
-            {
-                if (prop.Name.Equals("Id"))
-                    continue;
-                sb.Append($"{prop.Name}: {prop.GetValue(preset)}\n");
-            }
+            sb.Append("**S.P.E.C.I.A.L.:**\n");
+            for (int i = 0; i < Globals.SPECIAL_PROPER_NAMES.Length; i++)
+                sb.Append($"**{Globals.SPECIAL_PROPER_NAMES[i]}:** {preset.Special.SpecialArray[i]}\n");
+
+            sb.Append("\n**Skills:**\n");
+            for (int i = 0; i < Globals.SKILL_PROPER_NAMES.Length; i++)
+                sb.Append($"**{Globals.SKILL_PROPER_NAMES[i]}:** {preset.Skills.SkillsArray[i]}\n");
 
             await dmChannel.SendMessageAsync(Context.User.Mention, embed: EmbedHelper.BuildBasicEmbed($"Preset info for {preset.Name}:", sb.ToString()));
         }

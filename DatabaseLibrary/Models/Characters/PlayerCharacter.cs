@@ -20,7 +20,8 @@ namespace FalloutRPG.Models
         public string Description { get; set; }
         public string Story { get; set; }
 
-        public float SkillPoints { get; set; }
+        public int ExperiencePoints { get; set; }
+        public int TagPoints { get; set; }
         public bool IsReset { get; set; }
     }
 }

@@ -46,21 +46,6 @@ namespace FalloutRPG.Modules.Roleplay
             }
         }
 
-        [Command("setskillpoints")]
-        public async Task SetCharacterSkillPointsAsync(IUser receiver, int newValue)
-        {
-            try
-            {
-                await _cheatService.SetCharacterSkillPointsAsync(Context.Channel.Id, Context.User.Id, receiver.Id, newValue);
-                await ReplyAsync(String.Format(Messages.CHEAT_SKILL_POINTS_GIVEN, Context.User.Mention));
-            }
-            catch (Exception e)
-            {
-                await ReplyAsync($"{Messages.FAILURE_EMOJI} {e.Message} ({Context.User.Mention}");
-                return;
-            }
-        }
-
         [Command("setlevel")]
         public async Task SetLevelAsync(IUser user, int level)
         {

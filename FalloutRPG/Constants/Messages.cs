@@ -9,6 +9,7 @@
         public const string NPC_SUFFIX = "(\uD83D\uDCBBNPC) ";
         public const string QUESTION_EMOJI = "❓ ";
         public const string DICE_EMOJI = "\uD83C\uDFB2";
+        public const string GIFT_EMOJI = "\uD83C\uDF81";
 
         // Character Messages
         public const string CHAR_CREATED_SUCCESS = SUCCESS_EMOJI + "Character created successfully. ({0})";
@@ -114,8 +115,12 @@
         // Item Messages
         public const string ITEM_GIVE_SUCCESS = SUCCESS_EMOJI + "Gave item {0} to {1}. ({2})";
         public const string ITEM_CREATE_SUCCESS = SUCCESS_EMOJI + "Created new item with name {0} and type {1}. ({2})";
+        public const string ITEM_PACK_ASSIGN = SUCCESS_EMOJI + "Successfully assigned item: {0}. ({1})";
+        public const string ITEM_PACK_UNASSIGN = SUCCESS_EMOJI + "Successfully unassigned item: {0}. ({1})";
+        public const string ITEM_PACK_OPEN = GIFT_EMOJI + "You recieved the item: {0} x {1}. ({0})";
 
         // Item Error Messages
+        public const string ERR_ITEM_EXISTS = FAILURE_EMOJI + "An item with the same name already exists. ({0})";
         public const string ERR_ITEM_NOT_FOUND = FAILURE_EMOJI + "That item was unable to be found. ({0})";
         public const string ERR_ITEM_INVALID_SLOT = FAILURE_EMOJI + "The given apparel slot was invalid. ({0})";
         public const string ERR_ITEM_INVALID_AMMO = FAILURE_EMOJI + "The given ammo was unable to be found; does it exist yet? ({0})";

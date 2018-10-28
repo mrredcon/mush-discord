@@ -181,8 +181,9 @@ namespace FalloutRPG.Modules.Roleplay
 
             var inv = character.Inventory;
 
-            StringBuilder sb = new StringBuilder("**Weapons:**\n");
+            StringBuilder sb = new StringBuilder();
 
+            sb.Append("**Weapons:**\n");
             foreach (var item in inv.OfType<ItemWeapon>())
                 sb.Append($"__*{item.Name}*__:\n" +
                     $"Damage: {item.Damage}\n" +

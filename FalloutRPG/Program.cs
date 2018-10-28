@@ -92,15 +92,15 @@ namespace FalloutRPG
                 .AddDbContext<RpgContext>(optionsAction: options => options
                 .UseLazyLoadingProxies()
                 .UseSqlite("Filename=MUSHDB.db"))
-            .AddTransient<IRepository<Player>, EfRepository<Player>>()
-            .AddTransient<IRepository<Character>, EfRepository<Character>>()
-            .AddTransient<IRepository<SkillSheet>, EfRepository<SkillSheet>>()
-            .AddTransient<IRepository<Special>, EfRepository<Special>>()
-            .AddTransient<IRepository<NpcPreset>, EfRepository<NpcPreset>>()
             .AddTransient<IRepository<Campaign>, EfRepository<Campaign>>()
+            .AddTransient<IRepository<Character>, EfRepository<Character>>()
             .AddTransient<IRepository<Effect>, EfRepository<Effect>>()
             .AddTransient<IRepository<Item>, EfRepository<Item>>()
+            .AddTransient<IRepository<NpcPreset>, EfRepository<NpcPreset>>()
+            .AddTransient<IRepository<Player>, EfRepository<Player>>()
             .AddTransient<IRepository<Scene>, EfRepository<Scene>>()
+            .AddTransient<IRepository<SkillSheet>, EfRepository<SkillSheet>>()
+            .AddTransient<IRepository<Special>, EfRepository<Special>>()
             .BuildServiceProvider();
 
         /// <summary>
