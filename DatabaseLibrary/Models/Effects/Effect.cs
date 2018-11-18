@@ -9,9 +9,6 @@ namespace FalloutRPG.Models
 
         public int ArmorClassAddition { get; set; }
 
-        public virtual Special SpecialLocks { get; set; }
-        public virtual SkillSheet SkillLocks { get; set; }
-
         public virtual IList<EffectSpecial> SpecialAdditions { get; set; }
         public virtual IList<EffectSkill> SkillAdditions { get; set; }
     }
