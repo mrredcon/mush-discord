@@ -112,10 +112,14 @@ namespace FalloutRPG.Modules.Roleplay
         public class CharacterDescriptionModule : ModuleBase<SocketCommandContext>
         {
             private readonly CharacterService _charService;
+            private readonly EffectsService _effectsService;
+            private readonly ItemService _itemService;
 
-            public CharacterDescriptionModule(CharacterService service)
+            public CharacterDescriptionModule(CharacterService service, EffectsService effectsService, ItemService itemService)
             {
                 _charService = service;
+                _effectsService = effectsService;
+                _itemService = itemService;
             }
 
             [Command]
@@ -164,57 +168,26 @@ namespace FalloutRPG.Modules.Roleplay
                 await _charService.SaveCharacterAsync(character);
                 await ReplyAsync(string.Format(Messages.CHAR_DESC_SUCCESS, userInfo.Mention));
             }
-        }
 
-        [Command("inventory")]
-        [Alias("inv", "items", "item")]
-        public async Task ShowCharacterInventoryAsync()
-        {
-            var userInfo = Context.User;
-            var character = await _charService.GetPlayerCharacterAsync(userInfo.Id);
-
-            if (character == null)
+            [Command("inventory")]
+            [Alias("inv", "items", "item")]
+            public async Task ShowCharacterInventoryAsync()
             {
-                await ReplyAsync(String.Format(Messages.ERR_CHAR_NOT_FOUND, userInfo.Mention));
-                return;
+                var userInfo = Context.User;
+                var character = await _charService.GetPlayerCharacterAsync(userInfo.Id);
+
+                if (character == null)
+                {
+                    await ReplyAsync(String.Format(Messages.ERR_CHAR_NOT_FOUND, userInfo.Mention));
+                    return;
+                }
+
+                string info = _itemService.GetCharacterInventory(character);
+
+                await ReplyAsync(userInfo.Mention, embed: EmbedHelper.BuildBasicEmbed($"{character.Name}'s Inventory:", info));
             }
 
-            var inv = character.Inventory;
-
-            StringBuilder sb = new StringBuilder();
-
-            sb.Append("**Weapons:**\n");
-            foreach (var item in inv.OfType<ItemWeapon>())
-                sb.Append($"__*{item.Name}*__:\n" +
-                    $"Damage: {item.Damage}\n" +
-                    $"{item.Skill.ToString()} Skill: {item.SkillMinimum}\n" +
-                    $"**Ammo Type:** {String.Join(", ", item.Ammo)}\n" +
-                    $"Ammo Capacity: {item.AmmoCapacity}\n" +
-                    $"Ammo Usage: {item.AmmoOnAttack}/Attack\n\n");
-
-            sb.Append("**Apparel:**\n");
-            foreach (var item in inv.OfType<ItemApparel>())
-                sb.Append($"__*{item.Name}*__: DT {item.DamageThreshold}\n");
-
-            sb.Append("**Consumables:**\n");
-            foreach (var item in inv.OfType<ItemConsumable>().ToHashSet())
-                sb.Append($"__*{item.Name}*__ x{inv.Count(x => x.Equals(item))}\n");
-
-            sb.Append("**Miscellaneous:**\n");
-            foreach (var item in inv.OfType<ItemMisc>())
-                sb.Append($"__*{item.Name}*__\n");
-
-            sb.Append("**Ammunition:**\n");
-            foreach (var item in inv.OfType<ItemAmmo>().ToHashSet())
-            {
-                sb.Append($"__*{item.Name}:*__ x{inv.Count(x => x.Equals(item))}\n");
-                if (item.DTMultiplier != 1)
-                    sb.Append($"DT Multiplier: {item.DTMultiplier}\n");
-                if (item.DTReduction != 0)
-                    sb.Append($"DT Reduction: {item.DTReduction}\n");
-            }
             
-            await ReplyAsync(userInfo.Mention, embed: EmbedHelper.BuildBasicEmbed($"{character.Name}'s Inventory:", sb.ToString()));
         }
     }
 }

@@ -48,5 +48,45 @@ namespace FalloutRPG.Services.Roleplay
 
         public bool HasAmmo(Character character, ItemWeapon weapon) =>
             character.Inventory.OfType<ItemAmmo>().Where(x => x.Equals(weapon.Ammo)).Count() >= weapon.AmmoOnAttack;
+
+        public string GetCharacterInventory(Character character)
+        {
+            var inv = character.Inventory;
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("**Weapons:**\n");
+            foreach (var item in inv.OfType<ItemWeapon>())
+                sb.Append($"__*{item.Name}*__:\n" +
+                    $"Damage: {item.Damage}\n" +
+                    $"{item.Skill.ToString()} Skill: {item.SkillMinimum}\n" +
+                    $"**Ammo Type:** {String.Join(", ", item.Ammo)}\n" +
+                    $"Ammo Capacity: {item.AmmoCapacity}\n" +
+                    $"Ammo Usage: {item.AmmoOnAttack}/Attack\n\n");
+
+            sb.Append("**Apparel:**\n");
+            foreach (var item in inv.OfType<ItemApparel>())
+                sb.Append($"__*{item.Name}*__: DT {item.DamageThreshold}\n");
+
+            sb.Append("**Consumables:**\n");
+            foreach (var item in inv.OfType<ItemConsumable>().ToHashSet())
+                sb.Append($"__*{item.Name}*__ x{inv.Count(x => x.Equals(item))}\n");
+
+            sb.Append("**Miscellaneous:**\n");
+            foreach (var item in inv.OfType<ItemMisc>())
+                sb.Append($"__*{item.Name}*__\n");
+
+            sb.Append("**Ammunition:**\n");
+            foreach (var item in inv.OfType<ItemAmmo>().ToHashSet())
+            {
+                sb.Append($"__*{item.Name}:*__ x{inv.Count(x => x.Equals(item))}\n");
+                if (item.DTMultiplier != 1)
+                    sb.Append($"DT Multiplier: {item.DTMultiplier}\n");
+                if (item.DTReduction != 0)
+                    sb.Append($"DT Reduction: {item.DTReduction}\n");
+            }
+
+            return sb.ToString();
+        }
     }
 }
