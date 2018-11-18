@@ -242,33 +242,86 @@ namespace FalloutRPG.Constants
             { "LUC", SpecialType.Luck },
         };
 
-        public static string[] SKILL_PROPER_NAMES = new string[]
+        public static readonly Dictionary<SkillType, string> SKILL_PROPER_NAMES = new Dictionary<SkillType, string>()
         {
-            // Strength
-            "Archery", "Athletics", "Construction", "Heavy Weapons", "Intimidation", "Melee", "Unarmed",
+            //Strength
+            { SkillType.Archery, "Archery" },
+            { SkillType.Athletics, "Athletics" },
+            { SkillType.Construction, "Construction" },
+            { SkillType.HeavyWeapons, "Heavy Weapons" },
+            { SkillType.Intimidation, "Intimidation" },
+            { SkillType.Melee, "Melee" },
+            { SkillType.Unarmed, "Unarmed" },                                       
+
             // Perception
-            "Alertness", "Art", "Brewing", "Cooking", "Deception", "Explosives", "First Aid", "Gunsmith", "Husbandry", "Investigation", "Music", "Repair", "Security",
+            { SkillType.Alertness,"Alertness" },
+            { SkillType.Art, "Art" },
+            { SkillType.Brewing, "Brewing" },
+            { SkillType.Cooking, "Cooking" },
+            { SkillType.Deception,"Deception" },
+            { SkillType.Explosives,"Explosives" },
+            { SkillType.FirstAid, "First Aid" },
+            { SkillType.Gunsmith, "Gunsmith" },
+            { SkillType.Husbandry,"Husbandry" },
+            { SkillType.Investigation, "Investigation" },
+            { SkillType.Music, "Music" },
+            { SkillType.Repair, "Repair" },
+            { SkillType.Security, "Security" },                                        
+
             // Endurance
-            "Blacksmith", "Resistance", "Survival", "Toughness",
+            { SkillType.Blacksmith,"Blacksmith" },
+            { SkillType.Resistance, "Resistance" },
+            { SkillType.Survival, "Survival" },
+            { SkillType.Toughness,"Toughness" },                                         
+
             // Charisma
-            "Barter", "Command", "Courage", "Manipulation", "Performance", "Persuasion", "Seduction", "Streetwise",
+            { SkillType.Barter, "Barter" },
+            { SkillType.Command, "Command" },
+            { SkillType.Courage, "Courage" },
+            { SkillType.Manipulation, "Manipulation" },
+            { SkillType.Performance, "Performance" },
+            { SkillType.Persuasion, "Persuasion" },
+            { SkillType.Seduction, "Seduction" },
+            { SkillType.Streetwise, "Streetwise" },                                          
+
             // Intelligence
-            "Energy Weapons", "Hacking", "History", "Literature", "Medicine", "Pharmaceuticals", "Science", "Tactics", "Technology",
+            { SkillType.EnergyWeapons, "Energy Weapons" },
+            { SkillType.Hacking, "Hacking" },
+            { SkillType.History, "History" },
+            { SkillType.Literature, "Literature" },
+            { SkillType.Medicine, "Medicine" },
+            { SkillType.Pharmaceuticals,"Pharmaceuticals" },
+            { SkillType.Science, "Science" },
+            { SkillType.Tactics, "Tactics" },
+            { SkillType.Technology,"Technology" },                                          
+
             // Agility
-            "Acrobatics", "Dodge", "Drive", "Firearms", "Pilot", "Riding", "Stealth", "Tailoring",
+            { SkillType.Acrobatics,"Acrobatics" },
+            { SkillType.Dodge, "Dodge" },
+            { SkillType.Drive, "Drive" },
+            { SkillType.Firearms, "Firearms" },
+            { SkillType.Pilot, "Pilot" },
+            { SkillType.Riding, "Riding" },
+            { SkillType.Stealth, "Stealth" },
+            { SkillType.Tailoring,"Tailoring" },                                         
+
             // Luck
-            "Escape", "Gamble", "Improvised Weapons", "Jury Rig", "Scavenge"
+            { SkillType.Escape, "Escape" },
+            { SkillType.Gamble, "Gamble" },
+            { SkillType.ImprovisedWeapons, "Improvised Weapons" },
+            { SkillType.JuryRig, "Jury Rig" },
+            { SkillType.Scavenge, "Scavenge" },
         };
 
-        public static string[] SPECIAL_PROPER_NAMES = new string[]
+        public static readonly Dictionary<SpecialType, string> SPECIAL_PROPER_NAMES = new Dictionary<SpecialType, string>()
         {
-            "Strength",
-            "Perception",
-            "Endurance",
-            "Charisma",
-            "Intelligence",
-            "Agility",
-            "Luck"
+            { SpecialType.Strength, "Strength" },
+            { SpecialType.Perception, "Perception" },
+            { SpecialType.Endurance, "Endurance" },
+            { SpecialType.Charisma, "Charisma" },
+            { SpecialType.Intelligence, "Intelligence" },
+            { SpecialType.Agility, "Agility" },
+            { SpecialType.Luck, "Luck" }
         };
 
         public const int RATELIMIT_SECONDS = 2;

@@ -54,14 +54,15 @@ namespace FalloutRPG.Modules.Roleplay
                 StringBuilder sb = new StringBuilder($"**Name:** {character.Name}\n");
 
                 sb.Append("\n**Skills:**\n");
-                for (int i = 0; i < Globals.SKILL_PROPER_NAMES.Length; i++)
+                foreach (var entry in Globals.SKILL_PROPER_NAMES)
                 {
-                    if (character.Skills.SkillsArray[i] == 0)
-                        continue;
-                    sb.Append($"**{Globals.SKILL_PROPER_NAMES[i]}:** {character.Skills.SkillsArray[i]}\n");
-                }
+                    var skillValue = _skillsService.GetSkill(character, entry.Key);
 
-                //sb.Append($"*You have {character.SkillPoints} left to spend! ($char skills spend)*");
+                    if (skillValue == 0)
+                        continue;
+
+                    sb.Append($"**{entry.Value}:** {skillValue}\n");
+                }
 
                 var embed = EmbedHelper.BuildBasicEmbed("Command: $character skills", sb.ToString());
 

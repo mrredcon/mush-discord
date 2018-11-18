@@ -130,12 +130,19 @@ namespace FalloutRPG.Modules.Roleplay
             StringBuilder sb = new StringBuilder();
 
             sb.Append("**S.P.E.C.I.A.L.:**\n");
-            for (int i = 0; i < Globals.SPECIAL_PROPER_NAMES.Length; i++)
-                sb.Append($"**{Globals.SPECIAL_PROPER_NAMES[i]}:** {preset.Special.SpecialArray[i]}\n");
+            foreach (var special in Globals.SPECIAL_PROPER_NAMES)
+                sb.Append($"**{special.Value}:** {_specialService.GetSpecial(preset.Special, special.Key)}\n");
 
             sb.Append("\n**Skills:**\n");
-            for (int i = 0; i < Globals.SKILL_PROPER_NAMES.Length; i++)
-                sb.Append($"**{Globals.SKILL_PROPER_NAMES[i]}:** {preset.Skills.SkillsArray[i]}\n");
+            foreach (var skill in Globals.SKILL_PROPER_NAMES)
+            {
+                var skillValue = _skillsService.GetSkill(preset.Skills, skill.Key);
+
+                if (skillValue == 0)
+                    continue;
+
+                sb.Append($"**{skill.Value}:** {skillValue}\n");
+            }
 
             await dmChannel.SendMessageAsync(Context.User.Mention, embed: EmbedHelper.BuildBasicEmbed($"Preset info for {preset.Name}:", sb.ToString()));
         }
