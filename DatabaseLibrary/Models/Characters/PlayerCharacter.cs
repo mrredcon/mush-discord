@@ -22,12 +22,5 @@ namespace FalloutRPG.Data.Models.Characters
         public int ExperiencePoints { get; set; }
         public int TagPoints { get; set; }
         public bool IsReset { get; set; }
-
-        public List<(Globals.SkillType Skill, int Value)> Skills2 { get; set; }
-
-        void test()
-        {
-            Skills2[Skills2.FindIndex(x => x.Skill == Globals.SkillType.Firearms)] = (Globals.SkillType.Firearms, 2);
-        }
     }
 }
