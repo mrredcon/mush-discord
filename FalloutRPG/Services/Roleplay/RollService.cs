@@ -1,5 +1,5 @@
 ﻿using FalloutRPG.Constants;
-using FalloutRPG.Models;
+using FalloutRPG.Data.Models;
 using System;
 
 namespace FalloutRPG.Services.Roleplay

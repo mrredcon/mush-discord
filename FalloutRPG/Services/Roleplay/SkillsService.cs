@@ -1,5 +1,5 @@
 ﻿using FalloutRPG.Constants;
-using FalloutRPG.Models;
+using FalloutRPG.Data.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;

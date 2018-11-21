@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FalloutRPG.Models
+namespace FalloutRPG.Data.Models
 {
     public class Effect : BaseModel
     {

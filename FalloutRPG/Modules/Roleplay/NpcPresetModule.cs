@@ -2,7 +2,7 @@
 using Discord.Commands;
 using FalloutRPG.Constants;
 using FalloutRPG.Helpers;
-using FalloutRPG.Models;
+using FalloutRPG.Data.Models;
 using FalloutRPG.Services;
 using FalloutRPG.Services.Roleplay;
 using System;

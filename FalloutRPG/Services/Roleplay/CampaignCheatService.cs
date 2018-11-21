@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Discord;
 using FalloutRPG.Constants;
-using FalloutRPG.Models;
+using FalloutRPG.Data.Models;
 using FalloutRPG.Services;
 using FalloutRPG.Services.Roleplay;
 

@@ -1,4 +1,4 @@
-﻿namespace FalloutRPG.Models
+﻿namespace FalloutRPG.Data.Models
 {
     public abstract class BaseModel
     {

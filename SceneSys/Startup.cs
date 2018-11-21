@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FalloutRPG.Data;
 using FalloutRPG.Data.Repositories;
-using FalloutRPG.Models;
+using FalloutRPG.Data.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

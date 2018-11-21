@@ -2,7 +2,7 @@
 using Discord.Commands;
 using Discord.WebSocket;
 using FalloutRPG.Constants;
-using FalloutRPG.Models;
+using FalloutRPG.Data.Models;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;

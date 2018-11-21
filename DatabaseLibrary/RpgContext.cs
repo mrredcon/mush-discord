@@ -1,4 +1,4 @@
-﻿using FalloutRPG.Models;
+﻿using FalloutRPG.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace FalloutRPG.Data

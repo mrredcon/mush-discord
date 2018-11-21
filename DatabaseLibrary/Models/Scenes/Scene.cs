@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FalloutRPG.Models
+namespace FalloutRPG.Data.Models
 {
     public class Scene : BaseModel
     {

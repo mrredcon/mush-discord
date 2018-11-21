@@ -1,6 +1,6 @@
 ﻿using FalloutRPG.Constants;
 using FalloutRPG.Data.Repositories;
-using FalloutRPG.Models;
+using FalloutRPG.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;

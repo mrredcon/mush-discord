@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FalloutRPG.Models
+namespace FalloutRPG.Data.Models
 {
     public class SkillSheet : BaseModel
     {

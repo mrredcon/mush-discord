@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FalloutRPG.Models
+namespace FalloutRPG.Data.Models
 {
     public class ItemPack : Item
     {

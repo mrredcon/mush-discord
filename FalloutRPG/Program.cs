@@ -4,7 +4,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using FalloutRPG.Data;
 using FalloutRPG.Data.Repositories;
-using FalloutRPG.Models;
+using FalloutRPG.Data.Models;
 using FalloutRPG.Services;
 using FalloutRPG.Services.Roleplay;
 using Microsoft.EntityFrameworkCore;

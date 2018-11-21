@@ -1,8 +1,9 @@
-﻿using System;
+﻿using FalloutRPG.Constants;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace FalloutRPG.Models
+namespace FalloutRPG.Data.Models
 {
     public class PlayerCharacter : Character
     {
@@ -23,5 +24,12 @@ namespace FalloutRPG.Models
         public int ExperiencePoints { get; set; }
         public int TagPoints { get; set; }
         public bool IsReset { get; set; }
+
+        public List<(Globals.SkillType Skill, int Value)> Skills2 { get; set; }
+
+        void test()
+        {
+            Skills2[Skills2.FindIndex(x => x.Skill == Globals.SkillType.Firearms)] = (Globals.SkillType.Firearms, 2);
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Discord.WebSocket;
 using FalloutRPG.Data.Repositories;
-using FalloutRPG.Models;
+using FalloutRPG.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
