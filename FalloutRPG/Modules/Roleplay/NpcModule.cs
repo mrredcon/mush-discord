@@ -1,12 +1,8 @@
-﻿using Discord;
-using Discord.Commands;
+﻿using Discord.Commands;
 using FalloutRPG.Constants;
-using FalloutRPG.Helpers;
-using FalloutRPG.Data.Models;
 using FalloutRPG.Services;
 using FalloutRPG.Services.Roleplay;
 using System;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FalloutRPG.Modules.Roleplay
@@ -38,10 +34,8 @@ namespace FalloutRPG.Modules.Roleplay
                 await ReplyAsync(Messages.FAILURE_EMOJI + e.Message);
                 return;
             }
-            // used to show "Raider created" vs "raIDeR created" or whatever the user put in
-            NpcPreset preset = await _presetService.GetNpcPreset(type);
 
-            await ReplyAsync(String.Format(Messages.NPC_CREATED_SUCCESS, preset.Name, name));
+            await ReplyAsync(String.Format(Messages.NPC_CREATED_SUCCESS, type, name));
         }
 
         [Command]

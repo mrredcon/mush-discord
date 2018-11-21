@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace FalloutRPG.Data.Models
+﻿namespace FalloutRPG.Data.Models.Scenes
 {
     public class Pose : BaseModel
     {

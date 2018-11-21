@@ -1,9 +1,7 @@
 ﻿using FalloutRPG.Constants;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace FalloutRPG.Data.Models
+namespace FalloutRPG.Data.Models.Characters
 {
     public class PlayerCharacter : Character
     {

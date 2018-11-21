@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace FalloutRPG.Data.Models
+namespace FalloutRPG.Data.Models.Items
 {
     public class ItemPack : Item
     {

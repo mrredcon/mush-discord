@@ -1,8 +1,6 @@
-﻿using FalloutRPG.Constants;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FalloutRPG.Data.Models
+namespace FalloutRPG.Data.Models.Characters
 {
     public class SkillSheet : BaseModel
     {

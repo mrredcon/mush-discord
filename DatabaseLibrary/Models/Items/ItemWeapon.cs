@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FalloutRPG.Data.Models
+namespace FalloutRPG.Data.Models.Items
 {
     public class ItemWeapon : Item
     {

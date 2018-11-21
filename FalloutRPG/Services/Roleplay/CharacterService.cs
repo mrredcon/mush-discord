@@ -1,7 +1,7 @@
 ﻿using FalloutRPG.Constants;
 using FalloutRPG.Data.Repositories;
 using FalloutRPG.Helpers;
-using FalloutRPG.Data.Models;
+using FalloutRPG.Data.Models.Characters;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

@@ -1,9 +1,8 @@
 ﻿using Discord.Commands;
 using FalloutRPG.Addons;
 using FalloutRPG.Constants;
+using FalloutRPG.Data.Models.Scenes;
 using FalloutRPG.Data.Repositories;
-using FalloutRPG.Data.Models;
-using FalloutRPG.Services.Roleplay;
 using System;
 using System.Threading.Tasks;
 

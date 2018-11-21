@@ -1,6 +1,5 @@
-﻿using System;
+﻿using FalloutRPG.Data.Models.Characters;
 using System.Collections.Generic;
-using System.Text;
 
 namespace FalloutRPG.Data.Models
 {

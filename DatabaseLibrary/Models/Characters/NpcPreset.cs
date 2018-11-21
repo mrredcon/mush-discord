@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace FalloutRPG.Data.Models
+﻿namespace FalloutRPG.Data.Models.Characters
 {
     public class NpcPreset : BaseModel
     {

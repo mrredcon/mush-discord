@@ -3,11 +3,11 @@ using Discord.WebSocket;
 using FalloutRPG.Constants;
 using FalloutRPG.Data.Repositories;
 using FalloutRPG.Data.Models;
+using FalloutRPG.Data.Models.Characters;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FalloutRPG.Services.Roleplay

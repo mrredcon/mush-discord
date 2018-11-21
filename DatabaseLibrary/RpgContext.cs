@@ -1,4 +1,8 @@
 ﻿using FalloutRPG.Data.Models;
+using FalloutRPG.Data.Models.Characters;
+using FalloutRPG.Data.Models.Effects;
+using FalloutRPG.Data.Models.Items;
+using FalloutRPG.Data.Models.Scenes;
 using Microsoft.EntityFrameworkCore;
 
 namespace FalloutRPG.Data

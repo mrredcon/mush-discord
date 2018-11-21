@@ -1,5 +1,5 @@
 ﻿using FalloutRPG.Constants;
-using FalloutRPG.Data.Models;
+using FalloutRPG.Data.Models.Characters;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

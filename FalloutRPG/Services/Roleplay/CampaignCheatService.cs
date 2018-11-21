@@ -1,10 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using Discord;
 using FalloutRPG.Constants;
-using FalloutRPG.Data.Models;
-using FalloutRPG.Services;
-using FalloutRPG.Services.Roleplay;
+using FalloutRPG.Data.Models.Characters;
 
 namespace FalloutRPG.Services.Roleplay
 {

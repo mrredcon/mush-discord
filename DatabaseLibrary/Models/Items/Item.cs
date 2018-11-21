@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using FalloutRPG.Data.Models.Effects;
 using System.Collections.Generic;
 
-namespace FalloutRPG.Data.Models
+namespace FalloutRPG.Data.Models.Items
 {
     public abstract class Item : BaseModel
     {

@@ -2,12 +2,10 @@
 using Discord.Commands;
 using FalloutRPG.Constants;
 using FalloutRPG.Helpers;
-using FalloutRPG.Data.Models;
+using FalloutRPG.Data.Models.Characters;
 using FalloutRPG.Services;
 using FalloutRPG.Services.Roleplay;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 

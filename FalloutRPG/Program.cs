@@ -13,6 +13,10 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using FalloutRPG.Data.Models.Characters;
+using FalloutRPG.Data.Models.Effects;
+using FalloutRPG.Data.Models.Items;
+using FalloutRPG.Data.Models.Scenes;
 
 namespace FalloutRPG
 {

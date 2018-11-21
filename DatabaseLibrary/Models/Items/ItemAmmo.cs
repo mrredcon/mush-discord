@@ -1,4 +1,4 @@
-﻿namespace FalloutRPG.Data.Models
+﻿namespace FalloutRPG.Data.Models.Items
 {
     public class ItemAmmo : Item
     {

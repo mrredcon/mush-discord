@@ -3,11 +3,8 @@ using Discord.Commands;
 using FalloutRPG.Addons;
 using FalloutRPG.Constants;
 using FalloutRPG.Helpers;
-using FalloutRPG.Data.Models;
 using FalloutRPG.Services.Roleplay;
 using System;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FalloutRPG.Modules.Roleplay

@@ -1,8 +1,8 @@
 ﻿using FalloutRPG.Constants;
 using FalloutRPG.Data.Repositories;
-using FalloutRPG.Data.Models;
+using FalloutRPG.Data.Models.Characters;
+using FalloutRPG.Data.Models.Effects;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;

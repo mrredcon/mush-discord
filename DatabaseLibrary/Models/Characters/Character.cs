@@ -1,8 +1,9 @@
-﻿using System;
+﻿using FalloutRPG.Data.Models.Effects;
+using FalloutRPG.Data.Models.Items;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FalloutRPG.Data.Models
+namespace FalloutRPG.Data.Models.Characters
 {
     public abstract class Character : BaseModel
     {
